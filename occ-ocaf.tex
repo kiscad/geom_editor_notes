@@ -1,4 +1,4 @@
-% Created 2024-01-13 Sat 15:59
+% Created 2024-01-13 Sat 18:45
 % Intended LaTeX compiler: xelatex
 \documentclass[11pt]{article}
 \usepackage{graphicx}
@@ -28,11 +28,11 @@
 \tableofcontents
 
 \section{OCAF (OpenCascade Application Framework)}
-\label{sec:org4d6b0c6}
+\label{sec:org0019406}
 
 OCAF 模块提供了一种在 CAD 应用中组织和管理数据的框架。OCAF 的设计目标是提供一个灵活的、可扩展的、支持版本控制的数据模型，以便更容易地创建和管理复杂的 CAD 数据。
 \subsection{Purpose of OCAF}
-\label{sec:orgfa06bf8}
+\label{sec:org1bfde9b}
 
 一般来说，要开发一个设计软件，我们需要提前想清楚如下一些问题：
 
@@ -46,7 +46,7 @@ OCAF 模块提供了一种在 CAD 应用中组织和管理数据的框架。OCAF
 
 OCAF 模块为上面这些设计问题，提供了解决方案。
 \subsection{OCAF 依赖与 OCCT 的其他 modules}
-\label{sec:org89c7a89}
+\label{sec:org116a232}
 
 \begin{itemize}
 \item \texttt{Shape} from \texttt{Modeling Data} module
@@ -54,7 +54,7 @@ OCAF 模块为上面这些设计问题，提供了解决方案。
 \item Modeling functions from \texttt{Modeling Algorithms} module
 \end{itemize}
 \subsection{OCAF Architecture}
-\label{sec:org0852e15}
+\label{sec:org9111205}
 
 \begin{center}
 \includegraphics[width=.9\linewidth]{./img/application-document-attribute-model.png}
@@ -68,7 +68,7 @@ OCAF 模块为上面这些设计问题，提供了解决方案。
 \item 一个 \texttt{Attribute} 实例可以是 \texttt{Shape}, \texttt{Viewer}, \texttt{Function} 中的一种
 \end{itemize}
 \subsubsection{Application}
-\label{sec:org25a552d}
+\label{sec:org1a93eb7}
 
 \texttt{Application} 是负责管理文档的抽象类。其主要职责有：
 
@@ -79,7 +79,7 @@ OCAF 模块为上面这些设计问题，提供了解决方案。
 \item 初始化文档视图
 \end{itemize}
 \subsubsection{Document}
-\label{sec:org213a84b}
+\label{sec:orgd3b4733}
 
 \texttt{Document} 是承载 App 数据的容器，主要职责有：
 
@@ -94,14 +94,14 @@ OCAF 模块为上面这些设计问题，提供了解决方案。
 
 \texttt{Document} 以一定的 format 保存为 ASCII 文件。通过 reference key，一个文档内可以引用另一个文档中的 label。
 \subsubsection{Attribute}
-\label{sec:orgab845ca}
+\label{sec:org5cdac16}
 
 All Attributes are organized by the OCAF Data Framework. The Data Framework references all attributes using persistent identifiers in a single hierarchy. (感觉 Data Framework 像一个 Allocator)
 
 软件数据实际上存储在 Attributes 上。Attributes 包含多种继承子 \texttt{Attribute} abstract class 的类型：
 \begin{enumerate}
 \item Standard attributes
-\label{sec:org28f0579}
+\label{sec:orge1c9993}
 
 Standard attributes 涵盖了
 
@@ -111,7 +111,7 @@ Standard attributes 涵盖了
 \item 创建依赖的 types: reference, tree node
 \end{itemize}
 \item Shape attributes
-\label{sec:orgf1df24e}
+\label{sec:org16d801a}
 
 Shape attributes 包含了建模的几何数据，以及 shape reference, shape evolution tracking 等数据。
 
@@ -121,11 +121,11 @@ Shape attributes 包含了建模的几何数据，以及 shape reference, shape 
 \item \textbf{Constraints} (tangent-to, at-a-given-distance, from-a-given-angle, concentric, etc.)
 \end{itemize}
 \item Visualization attributes
-\label{sec:org8368571}
+\label{sec:org5bb25ad}
 
 Visualization attributes 包含了一些用于 graphical data representation 的数据类型，如 viewer information, visual representation of objects, 以及 auxiliary visual info.
 \item Function services
-\label{sec:org4b7b39e}
+\label{sec:org18e41f6}
 
 \begin{itemize}
 \item The purpose of these attributes is to rebuild objects after they have been modified (parameterization of models).
@@ -134,7 +134,7 @@ Visualization attributes 包含了一些用于 graphical data representation 的
 \end{itemize}
 \end{enumerate}
 \subsection{Reference-key model}
-\label{sec:orgf9e511b}
+\label{sec:orgc16058b}
 
 Reference-key driven model V.S. Topology driven model
 
@@ -146,7 +146,7 @@ In most existing geometric modeling systems, the data are topology driven. They 
 
 In OCAF, the data are reference-key driven. It is a uniform model in which reference-keys are the persistent identification of data. All data are implemented as attributes attached to ref-keys. 通过一个 ref-key, 多个 attributes 被关联在一起。
 \subsubsection{Ref-keys 创建途径: 程序创建和用户创建}
-\label{sec:org35e2055}
+\label{sec:org37eb675}
 
 \begin{itemize}
 \item As an application developer, you generate reference-keys in order to give semantics to the data.
@@ -167,7 +167,44 @@ In OCAF, the data are reference-key driven. It is a uniform model in which refer
 
 在 parametrized modeling 中，当你修改了一个 parameter value，一个 topo element 可能会发生平移。这时通过 ref-key 关联的 data 也会相应更新。
 \section{The Data Framework}
-\label{sec:orgf02c9f8}
+\label{sec:org3d2e256}
+
+OCAF Data Framework (TDF) 是一个 ref-key model 的实现，基于 tree structure。
+
+\begin{center}
+\includegraphics[width=6cm]{./img/ocaf_TDF_model_tree.png}
+\end{center}
+
+TDF 的基本构建元素有: \texttt{Tag}, \texttt{Label}, \texttt{Attribute}.
+
+\begin{itemize}
+\item 每个 \texttt{Label} 都有一个整数型的 \texttt{Tag} 作为其 local ID。
+\begin{itemize}
+\item TDF 中的第一个 \texttt{Label} 为 root node of tree structure
+\begin{itemize}
+\item 一个 label 的 sub-labels 被称为其 \textbf{children}
+\item 除了 root label, 每个 label 都有一个 \textbf{father}
+\end{itemize}
+\item Label 的语义 (以一个水壶模型为例)：
+\begin{itemize}
+\item root label 代表水壶模型整体
+\item 其 sub-labels 分别代表了手柄，壶嘴，盖子，壶体等
+\item 以盖子 label 为例，可以进一步按照盖子的构造进行细分
+\item 下图为水壶模型的 TDF Tree
+\begin{center}
+\includegraphics[width=7cm]{./img/ocaf_tdf_tree_of_kettle.png}
+\end{center}
+\end{itemize}
+\item 每个 \texttt{Label} 都可以由一个 tag-sequence 在文档内被唯一标识，如 \texttt{0:1:2:1}, 即从 root label 到当前 label 的路径。
+\item 每个 \texttt{Label} 可以包含一个 \texttt{Atrribute} 列表。
+\end{itemize}
+\item \texttt{Attribute} 用于存储真正的数据。
+\begin{itemize}
+\item 每个 \texttt{Attribute} 被一个 GUID 唯一标识。
+\end{itemize}
+\end{itemize}
+
+
 
 OCAF 中的一些关键 packages 有：
 
@@ -196,7 +233,7 @@ OCAF 中的一些关键 packages 有：
 \texttt{TPrsStd} 提供了用于在用户界面中显示和呈现几何模型的工具。
 \end{itemize}
 \subsection{学习步骤}
-\label{sec:org1e7e4f6}
+\label{sec:orge041022}
 
 \begin{itemize}
 \item 先了解 \texttt{TDF} 的基本概念，包括标签、数据类型和版本控制。为后续学习奠定基础。
@@ -206,18 +243,18 @@ OCAF 中的一些关键 packages 有：
 \item 学习使用 \texttt{TPrsStd} 在用户界面中呈现和显示几何模型，包括创建图形视图以及将模型呈现到用户界面中。
 \end{itemize}
 \subsection{TDF package}
-\label{sec:org2d7df14}
+\label{sec:orgba450cb}
 
 
 \subsection{TDocStd package}
-\label{sec:org8847fa4}
+\label{sec:orgdd63dd5}
 
 \subsection{XCAF package}
-\label{sec:org88bed77}
+\label{sec:org5cb4a57}
 
 \subsection{TFunction package}
-\label{sec:orgb10568f}
+\label{sec:orgeeb867e}
 
 \subsection{TPrsStd package}
-\label{sec:org32642c9}
+\label{sec:org8797f23}
 \end{document}

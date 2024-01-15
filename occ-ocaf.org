@@ -130,9 +130,42 @@ In OCAF, the data are reference-key driven. It is a uniform model in which refer
 
 在 parametrized modeling 中，当你修改了一个 parameter value，一个 topo element 可能会发生平移。这时通过 ref-key 关联的 data 也会相应更新。
 
-  
-
 * The Data Framework
+
+** Data Structure
+OCAF Data Framework (TDF) 是一个 ref-key model 的实现，基于 tree structure。
+
+#+ATTR_LATEX: :width 6cm
+[[./img/ocaf_TDF_model_tree.png]]
+
+TDF 的基本构建元素有: =Tag=, =Label=, =Attribute=.
+
+- 每个 =Label= 都有一个整数型的 =Tag= 作为其 local ID。
+  + TDF 中的第一个 =Label= 为 root node of tree structure
+    * 一个 label 的 sub-labels 被称为其 *children*
+    * 除了 root label, 每个 label 都有一个 *father*
+  + Label 的语义 (以一个水壶模型为例)：
+    * a child of root label 代表水壶模型整体
+      + root label 没有 brothers, 一般它的每个 child 表示一个 model unit
+    * 其 sub-labels 分别代表了壶体，盖子，滤网等
+    * 以盖子 label 为例，可以进一步按照盖子的构造进行细分
+    * 下图为水壶模型的 TDF Tree
+      #+attr_latex: :width 7cm
+      [[./img/ocaf_tdf_tree_of_kettle.png]]
+  + 每个 =Label= 都可以由一个 tag-sequence 在文档内被唯一标识，如 =0:1:2:1=, 即从 root label 到当前 label 的路径。
+  + 每个 =Label= 可以包含一个 =Atrribute= 列表。
+- =Attribute= 用于存储真正的数据。
+  - 每个 =Attribute= 被一个 GUID 唯一标识。
+
+** Tag
+Tag 是一个整数值，用于 TDF 内部遍历每个 part 的方式，外部是无法使用的。
+Tag 有两种定位 label 的方式：
+
+- 相对定位：一个 label 的所有 sub-labels 具有不同的 tags
+- 从 root label 到当前 label 组成的 tag-list (=TDF_Tool::TagList=) 称为*entry*, 可以在文档中唯一标识一个 label。
+
+
+
 
 OCAF 中的一些关键 packages 有：
 

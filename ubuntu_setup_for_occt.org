@@ -1,0 +1,4 @@
+#+title: Ubuntu Setup For Occt
+#+LaTex_COMPILER: xelatex
+#+LaTex_HEADER: \usepackage{xeCJK}
+#+LaTex_HEADER: \setCJKmainfont{Heiti SC}
