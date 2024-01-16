@@ -408,8 +408,151 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
 
 ** Overview
 
-
+=TPrsStd= package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
 
 ** TPrsStd 主要功能与职责
 
++ 图形表示管理
+
+  =TPrsStd= 使得开发者可以将工程数据（如形状、属性等）与其在图形用户界面中的视觉表示相关联。这包括形状的渲染、颜色、纹理等。
+
++ 交互和选择支持
+
+  提供了工具来支持用户与图形表示的交互，包括选择、高亮显示和编辑操作。
+
++ 属性与视觉同步
+
+  确保工程数据的更改能够实时反映在图形表示上，例如当形状发生变化时，其视觉表示也会相应更新。
+
++ 高级显示功能
+
+  支持高级的显示功能，如透明度、阴影和纹理映射，使得工程模型的视觉表示更加逼真和详细。
+
++ 自定义显示属性
+
+  允许开发者定义自己的显示属性和表示方式，以满足特定应用的需求。
+
++ 与 OCAF 结合使用
+
+  =TPrsStd= 与 OCAF的其他组件（如 =TDF_Label=, =TDF_Attribute=)紧密集成，使得开发者可以方便地管理和同步数据与其图形表示。
+
++ 支持多种渲染引擎
+
+  可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
+
 ** TPrsStd 的主要接口与功能
+
++ =TPrsStd_AISPresentation= class
+
+  *功能*: 用于管理工程数据的图形表示，如形状在图形界面中的显示。
+
+  *主要接口*
+
+  - =SetDriver= 设置用于显示的驱动程序。
+  - =Update= 更新图形表示以反映数据的更改。
+  - =Display=, =Erase= 控制对象的显示和隐藏。
+
++ =TPrsStd_AISViewer= class
+
+  *功能*: 提供一个视图环境，用于显示和管理多个图形表示。
+
+  *主要接口*
+
+  - =Update= 更新视图中的所有表示
+  - =SetView= 设置或更改关联的视图
+
++ =TPrsStd_Presentation= class
+
+  *功能*: 作为数据和其图形表示之间的桥梁。
+
+  *主要接口*
+
+  - =Set= 关联数据和图形表示。
+  - =Get= 获取与数据关联的图形表示。
+
++ =TPrsStd_Driver= class
+
+  *功能*: 为具体的数据类型提供图形表示的生成和更新逻辑。
+
+  *主要接口*
+
+  - =Update= 根据数据更新图形表示。
+  - =Create= 根据给定的数据创建新的图形表示。
+
+
+* TDataStd package
+
+** Overview
+
+=TDataStd= 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
+
+** TDataStd 主要功能与职责
+
++ 基本数据类型的管理
+
+  =TDataStd= 提供了用于存储基本数据类型（如字符串、整数、实数、布尔值等）的属性。这些属性用于存储和检索与标签相关联的基本信息。
+
++ 集合和列表的管理
+
+  提供了管理数据集合（如数组、列表）的属性，用于存储多个数据项。
+
++ 命名和标识符管理
+
+  支持为标签分配名称和标识符，方便数据的识别与引用。
+
++ 枚举和状态管理
+
+  提供了用于管理枚举值和状态的属性，可以用于表示有限的选择集或状态机。
+
++ 文档的元数据管理
+
+  支持存储文档级别的元数据，如作者、版本信息、注释等。
+
++ 与 =TDF_Label= 结合使用
+
+  =TDataStd= 的属性与 =TDF_Label= 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
+
+** TDataStd 的主要接口与功能
+
++ =TDataStd_Integer=
+  - 功能: 用于存储和管理整数值
+  - 主要接口: =Set=, =Get=
++ =TDataStd_Real=
+  - 功能: 用于存储和管理实数值
+  - 主要接口: =Set=, =Get=
++ =TDataStd_String=
+  - 功能: 用于存储和管理字符串
+  - 主要接口: =Set=, =Get=
++ =TDataStd_UAttribute=
+  - 功能: 作为用户自定义数据的基类，可以派生出用于存储特定类型数据的类。
+  - 主要接口: =SetID= 设置属性的唯一标识符
++ =TDataStd_Name=
+  - 功能: 用于存储和管理对象的名称
+  - 主要接口: =Set=, =Get=
++ =TDataStd_Boolean=
+  - 功能: 用于存储和管理布尔值
+  - 主要接口: =Set=, =Get=
++ =TDataStd_Enum=
+  - 功能: 用于存储和管理枚举值
+  - 主要接口: =Set=, =Get=
+
+
+* BinTObj package
+
+* XmlTObj packages
+
+* 关键 Class 的串联
+
+** =TDocStd_Application=, =CDF_Application=, =CDM_Application= 三个类的主要接口及关系
+
++ =TDocStd_Application= 提供了高级的文档管理功能
+  - =NewDocument(format: String, &TDocStd_Document)= 创建一个新文档
+  - =Open(path: String, &TDocStd_Document)= 打开磁盘上的文档
+  - =SaveAs(TDocStd_Document, path: String)= 保存文档到磁盘
+  - =Close(TDocStd_Document)= 关闭给定文档
+  - =DefineFormat(format: String, &rwDriver)= 设置指定格式的读写驱动
++ =CDF_Application= (Cascade Document Framework) 提供了通用的文档管理接口，是=TDocStd_Application= 的基类。
+  - =Open(&CDM_Document)= 将文档加入到 current session directory
+  - =Close(&CDM_Document)= 将文档从 current session directory 移除并关闭。
++ =CDM_Application= (Cascade Document Management) 是更底层的文档管理类，提供文档管理的基础功能。
+  - 没看到啥值得注意的接口

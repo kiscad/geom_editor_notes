@@ -2,3 +2,45 @@
 #+LaTex_COMPILER: xelatex
 #+LaTex_HEADER: \usepackage{xeCJK}
 #+LaTex_HEADER: \setCJKmainfont{Heiti SC}
+
+* 安装依赖
+
+更新系统包索引，并安装必要的依赖项，包括编译工具和库。
+
+#+begin_src bash
+sudo apt update
+sudo apt install build-essential cmake libfreetype6-dev libfreeimage-dev libtbb-dev libgl1-mesa-dev libglu1-mesa-dev libxi-dev libxmu-dev
+sudo apt install tcl-dev tk-dev
+#+end_src
+
+* 下载 OCCT 源码
+
+从 Open CASCADE 官网或 GitHub 下载 OCCT 最新的源码。
+
+* 编译和安装 OCCT
+
+假设代码在目录 =~/OOCT= 下，
+
+#+begin_src bash
+cd ~
+mkdir occt-build
+mkdir occt-install
+cd occt-build
+# 配置 OCCT，最好使用 cmake-gui 进行配置
+cmake ../OOCT -DCMAKE_INSTALL_PREFIX=~/occt-install
+#+end_src
+
+编译 OCCT 库: =make -j$(nproc)=
+
+安装 OCCT 库: =sudo make install=
+
+* 配置环境变量
+
+设置环境变量以使编译器和连接器能够找到 OCCT 的头文件和库。在 =~/.bashrc= 或 =~/.profile= 中添加一下内容
+
+#+begin_src
+export CASROOT=/path/to/install
+export LD_LIBRARY_PATH=$CASROOT/lib:$LD_LIBRARY_PATH
+#+end_src
+
+* TODO 基于 OCCT 的样例项目
