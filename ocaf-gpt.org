@@ -1,7 +1,8 @@
 #+title: OCAF GPT
 #+LaTex_COMPILER: xelatex
 #+LaTex_HEADER: \usepackage{xeCJK}
-#+LaTex_HEADER: \setCJKmainfont{Heiti SC}
+#+LaTex_HEADER: \setCJKmainfont{SimSong}
+#+LaTex_HEADER: \setCJKmonofont{SimSong}
 
 * Introduction
 
@@ -556,3 +557,186 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
   - =Close(&CDM_Document)= 将文档从 current session directory 移除并关闭。
 + =CDM_Application= (Cascade Document Management) 是更底层的文档管理类，提供文档管理的基础功能。
   - 没看到啥值得注意的接口
+
+
+* 开发环境搭建
+
+** Ubuntu 环境下编译与配置 OCCT 开发环境
+
+1. 安装依赖
+
+  首先安装所有必要的依赖包，通常包括编译器、构建工具和其他库等。
+
+  #+begin_src bash
+  sudo apt-get update
+  sudo apt-get install build-essential cmake\
+      git libfreetype6-dev libfontconfig1-dev\
+      libx11-dev libxext-dev libxt-dev libxmu-dev\
+      libgl1-mesa-dev tcl-dev tk-dev
+  #+end_src
+
+2. 获取 OCCT 源代码
+
+  你可以从 [[https://dev.opencascade.org/release][OpenCASCADE]] 官网或 [[https://github.com/Open-Cascade-SAS/OCCT][GitHub]] 上的仓库获取源代码。
+
+  #+begin_src bash
+  mkdir ~/geom
+  cd ~/geom
+  git clone https://github.com/Open-Cascade-SAS/OCCT.git
+  #+end_src
+
+3. 编译与安装 OCCT
+
+  + 使用 CMake 来配置构建系统，创建一个构建目录，在其中运行 cmake
+
+    #+begin_src bash
+    mkdir occt-build
+    mkdir occt-install
+    cd occt-build
+    cmake ../OCCT -DCMAKE_INSTALL_PREFIX=./occt-install
+    #+end_src
+
+  + 编译 OCCT 库: =make -j$(nproc)=
+  + 安装 OCCT 库: =sudo make install=
+
+4. 配置环境变量
+
+  设置环境变量以使编译器和连接器能够找到 OCCT 的头文件和共享库。在 =~/.bashrc= 或 =~/.profile= 中添加如下内容
+
+  #+begin_src shell
+  export CASROOT=~/geom/occt-install
+  export LD_LIBRARY_PATH=$CASROOT/lib:$LD_LIBRARY_PATH
+  #+end_src
+
+** Arch Linux 环境下编译与配置 OCCT 开发环境
+
+** 编写简单的 OCCT 程序
+
+OCCT 安装完成后，我们可以通过编译运行一个简单的 OCCT 示例程序来验证安装。
+
+新建项目目录 =~/hello-occt/=, 新建项目文件 =CMakeLists.txt= 和 =main.cpp=. =CMakeLists.txt= 的内容如下：
+
+#+begin_src cmake
+cmake_minimum_required(VERSION 3.10)
+project(hello-occt)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(OpenCASCADE REQUIRED)
+
+include_directories(${OpenCASCADE_INCLUDE_DIR})
+
+set(SOURCES main.cpp)
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+
+target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})
+#+end_src
+
++ =project(hello-occt)= 设置项目的名称
++ =set(CMAKE_CXX_STANDARD 17)= 指定 C++ 标准
++ =find_package(OpenCASCADE REQUIRED)= 查找并加载 OCCT 库
++ =include_directories(${OpenCASCADE_INCLUDE_DIR})= 添加 OCCT 头文件的路径
++ =set(SOURCES ...)= 定义了项目的源文件
++ =add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})= 创建一个可执行文件
++ =target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})= 链接 OCCT 库
+
+源码文件 =main.cpp= 的内容如下
+
+#+begin_src cpp
+#include <iostream>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <TopoDS_Shape.hxx>
+
+int main() {
+  BRepPrimAPI_MakeBox box(1., 2., 3.);
+  const TopoDS_Shape& shape = box.Shape();
+  std::cout << "Hello OCCT" << std::endl;
+  return 0;
+}
+#+end_src
+
+按照如下的方式编译并执行程序
+
+#+begin_src bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
+./hello-occt
+#+end_src
+
+程序执行成功的话，会打印 =Hello OCCT= 。
+下面穿插介绍一下涉及的 OCCT clases。
+
+** 相关的 OCCT 类
+
+*** =BRepPrimAPI_MakeBox= class
+
+=BRepPrimAPI_MakeBox= 这个类是 OCCT 中 BRep 建模的一部分，用于创建三维的长方体(盒子)。长方体可以通过指定宽度、高度和深度来定义，也可以通过其他方式如两个对角点或中心点和尺寸来定义。它的一些关键接口有：
+
++ =BRepPrimAPI_MakeBox(gp_Pnt& P, Standard_Real dx, Standard_Real dy, Standard_Real dz)=: 以点 =P= 作为长方体的一个角，并指定长方体在三个方向上的尺寸 =(dx, dy, dz)= 来创建长方体。
++ =BRepPrimAPI_MakeBox(Standard_Real dx, Standard_Real dy, Standard_Real dz)=: 创建一个以原点为一个角的长方体，尺寸为 =(dx, dy, dz)=
++ =BRepPrimAPI_MakeBox(gp_Pnt& P1, gp_Pnt& P2)=: 以两个对角点 =P1= 和 =P2= 来创建长方体。
++ =BRepPrimAPI_MakeBox(gp_Ax2& Axes, Standard_Real dx, Standard_Real dy, Standard_Real dz)=: 以 =Axes= 定义的坐标系为参考，创建尺寸为 =(dx, dy, dz)= 的长方体
++ =Shape()= 方法可以获取生成的长方体形状 (=TopoDS_Shape= 类型)。
+
+*** =TopoDS_Shape= class
+
+=TopoDS_Shape= 是 OCCT 的一个核心类，用于表示和操作几何形状。 =TopoDS_Shape= 是所有几何形状的基类，包括点、线、面、实体等，它为各种几何实体提供了一种通用的访问和操作方式。它的一些重要的接口有:
+
++ =IsNull()=: 检查形状是否为空（引用为空）。
++ =IsEmpty()=: 检查形状是否为空或没有几何信息。
++ =TShape()=: 返回 Shape 的一个 handle。
++ =Orientation()=, =Orientation(TopAbs_Orientation)=: 获取和设置 Shape 的方向
++ =Location()=, =Location(const TopLoc_Location&)=: 获取和设置 Shape 的局部坐标系(local coordinate system)
++ =Located(const TopLoc_Location&)=: 获取一个当前 Shape 在新位置处的副本。
++ =Move(const TopLoc_Location&)=: 移动 Shape 的位置。
++ =Moved(const TopLoc_Location&)=: 获取一个当前 Shape 移动后的副本
++ =Reverse()=: 反转形状的方向 (orientation)
++ =Reversed()=: 获取一个当前 Shape 反转方向后的副本
++ =ShapeType()=: 获取 Shape 的类型，如 =TopAbs_VERTEX=, =TopAbs_EDGE=, =TopAbs_FACE= 等。
+
+* 一个简单的 OCAF 程序
+
+** 程序源码
+
+#+begin_src cpp
+#include <TDocStd_Application.hxx>
+#include <TDataStd_Integer.hxx>
+#include <BinDrivers.hxx>
+
+int main() {
+  Handle(TDocStd_Application) app = new TDocStd_Application;
+  BinDrivers::DefineFormat(app);
+
+  Handle(TDocStd_Document) doc;
+  app->NewDocument("BinOcaf", doc);
+
+  if (doc.IsNull()) {
+    std::cout << "Error: cannot create an OCAF document" << std::endl;
+    return 1;
+  }
+
+  TDF_Label mainLab = doc->Main();
+  TDataStd_Integer::Set(mainLab, 42);
+
+  auto sstatus = app->SaveAs(doc, "./test.cbf");
+  if (sstatus != PCDM_SS_OK) {
+    app->Close(doc);
+    std::cout << "Cannot write OCAF document" << std::endl;
+    return 1;
+  }
+
+  app->Close(doc);
+  return 0;
+}
+#+end_src
+
+上面的程序编译并执行后，会在当前目录下创建一个名为 =test.cbf= 的 OCC 二进制文档。我们可以大致查看一下二进制内容，如下图
+
+[[./img/binocaf-binary-content.png]]
+
+我们可以大致看到文档中包含了 creation-date file-format, reference-counter, modification-counter, =TDataStd_Integer= 等一些信息。
+
+** 相关的 OCCT 类

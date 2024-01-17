@@ -1,3 +1,9 @@
 hs_err*
 .DS_Store
+_minted-ocaf-gpt
+**.aux
+**.log
+**.out
+**.toc
+
 

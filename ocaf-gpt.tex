@@ -1,4 +1,4 @@
-% Created 2024-01-16 Tue 11:52
+% Created 2024-01-17 Wed 17:50
 % Intended LaTeX compiler: xelatex
 \documentclass[11pt]{article}
 \usepackage{graphicx}
@@ -10,8 +10,10 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage{minted}
 \usepackage{xeCJK}
-\setCJKmainfont{Heiti SC}
+\setCJKmainfont{SimSong}
+\setCJKmonofont{SimSong}
 \author{Chen Chen}
 \date{\today}
 \title{OCAF GPT}
@@ -28,16 +30,16 @@
 \tableofcontents
 
 \section{Introduction}
-\label{sec:org174545e}
+\label{sec:orgeb60ec6}
 
 \subsection{Overview}
-\label{sec:orge8924ed}
+\label{sec:orgae51fd3}
 
 Open CASCADE Technology (OCCT) 是一个开源的软件开发平台，用于三维 CAD、CAM、CAE 系统的开发。它提供了广泛的功能，涵盖了几何建模、图形可视化、数据交换和更多方面。
 
 Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OCAF 是一个应用程序框架，用于简化复杂工程图形应用程序的开发。它提供了一种有效的方式来组织、存储、检索和操作复杂的工程数据。OCAF 特别适合于需要处理复杂的装配结构、历史记录、参数化设计等场景的应用程序。
 \subsection{OCAF 的主要功能}
-\label{sec:org5721950}
+\label{sec:org4c40ce4}
 
 \begin{itemize}
 \item 数据管理
@@ -65,7 +67,7 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 
 通过 OCAF，开发者可以更专注于应用的核心功能，而不是底层的数据管理和操作。
 \subsection{OCAF 的主要 Packages}
-\label{sec:org2f1dd28}
+\label{sec:org4ce0a77}
 
 下面列出了一些在 OCAF 中常用且重要的 packages:
 
@@ -115,7 +117,7 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \end{itemize}
 \end{itemize}
 \subsection{如何学习掌握 OCCT 及 OCAF}
-\label{sec:orgfe9ebf6}
+\label{sec:orga1f79b2}
 
 \begin{itemize}
 \item 基础了解
@@ -143,14 +145,14 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \item 实际项目经验
 \end{itemize}
 \section{TDF Package}
-\label{sec:orga2b226f}
+\label{sec:orgbb2164b}
 
 \subsection{Overview}
-\label{sec:orgfd9993a}
+\label{sec:org4a7fd89}
 
 TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织复杂的工程数据（其中拓扑数据是几何建模的基础）。TDF 提供了一个结构化的方式来存储和操作与拓扑相关的信息，如点、线、面、实体等几何元素及其之间的关系。
 \subsection{TDF 的功能与职责}
-\label{sec:org6fa67a5}
+\label{sec:orgfb50402}
 
 \begin{itemize}
 \item 数据组织
@@ -178,7 +180,7 @@ TDF 支持数据的版本控制，这对于跟踪数据的历史变更非常有�
 TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制。
 \end{itemize}
 \subsection{TDF 的主要接口及功能}
-\label{sec:org0c44dc7}
+\label{sec:orga4b2c2a}
 
 \begin{itemize}
 \item \texttt{TDF\_Label} class
@@ -238,13 +240,13 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \end{itemize}
 \end{itemize}
 \section{TDocStd Package}
-\label{sec:org1aee66e}
+\label{sec:org6104c37}
 
 \subsection{Overview}
-\label{sec:org675f33d}
+\label{sec:org0b1b8b4}
 \texttt{TDocStd} 主要用于处理和管理文档(Document)，这些文档用于存储和组织复杂的 CAD 数据结构。一个文档通常代表一个工程项目或一个 CAD 模型，它包含了所有相关的数据和信息。 \texttt{TDocStd} 提供了一套工具和接口来创建、管理和存储这些文档。
 \subsection{TDocStd 的功能与职责}
-\label{sec:orgecc3764}
+\label{sec:org301ce90}
 
 \begin{itemize}
 \item 文档管理
@@ -272,7 +274,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \texttt{TDocStd} 的设计允许开发者根据需要扩展和定制文档的功能，以适应特定的应用需求。
 \end{itemize}
 \subsection{TDocStd 与 TDF package 的关系}
-\label{sec:org10a0a57}
+\label{sec:org789d503}
 
 \begin{itemize}
 \item \texttt{TDocStd} 依赖于 \texttt{TDF} 来组织文档内的数据。
@@ -282,7 +284,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item 在 TDF 基础上，TDocStd 提供了文档级别的管理，如创建/保存/加载文档、事务处理(Undo/Redo)等。
 \end{itemize}
 \subsection{TDocStd 的主要接口及功能}
-\label{sec:orgff90817}
+\label{sec:org01dbc11}
 
 \begin{itemize}
 \item \texttt{TDocStd\_Document} class
@@ -325,14 +327,14 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \end{itemize}
 \end{itemize}
 \section{XCAF Package (属于 DataExchange Module)}
-\label{sec:org2cb5ac6}
+\label{sec:org52f4e14}
 
 \subsection{Overview}
-\label{sec:orgf6420c9}
+\label{sec:org9aa8365}
 
 XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是那些涉及到复杂装配结构的数据。XCAF 提供了一些列工具和接口，用于管理和操作包括颜色、材料、元数据、层级关系等在内的复杂 CAD 模型数据。
 \subsection{XCAF 主要功能与职责}
-\label{sec:org387c4df}
+\label{sec:orga8f164d}
 
 \begin{itemize}
 \item 复杂装配结构管理
@@ -360,7 +362,7 @@ XCAF 允许为模型元素添加和管理高级属性，如材料属性、PMI(�
 XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \subsection{XCAF 的主要接口与功能}
-\label{sec:orgcad4401}
+\label{sec:org0ee9822}
 
 \begin{itemize}
 \item \texttt{XCAFDoc\_ShapeTool} class
@@ -433,14 +435,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \end{itemize}
 \section{TNaming package}
-\label{sec:orgfd61bb6}
+\label{sec:orgf09fa18}
 
 \subsection{Overview}
-\label{sec:org19e1c4d}
+\label{sec:orgc09aba3}
 
 \texttt{TNaming} 提供了命名服务，以便在复杂的 CAD 模型和数据结构中标识和追踪对象。这对于在模型变更过程中保持对特定对象的引用非常重要。
 \subsection{TNaming 的主要功能与职责}
-\label{sec:orgb1f2909}
+\label{sec:org20284c2}
 
 \begin{itemize}
 \item 对象标识和追踪
@@ -468,7 +470,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 支持与 OCAF 的撤销/重做机制结合使用，确保在运行这些操作时保持命名信息的一致性。
 \end{itemize}
 \subsection{TNaming 的主要接口与功能}
-\label{sec:org35cbe06}
+\label{sec:org19740f3}
 
 \begin{itemize}
 \item \texttt{TNaming\_NamedShape} class
@@ -527,14 +529,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \end{itemize}
 \section{TPrsStd package}
-\label{sec:orgabf9f64}
+\label{sec:org1a73278}
 
 \subsection{Overview}
-\label{sec:org01b67ae}
+\label{sec:org3cbf0ad}
 
 \texttt{TPrsStd} package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
 \subsection{TPrsStd 主要功能与职责}
-\label{sec:orgd2c40df}
+\label{sec:orgd159cc2}
 
 \begin{itemize}
 \item 图形表示管理
@@ -566,7 +568,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
 \end{itemize}
 \subsection{TPrsStd 的主要接口与功能}
-\label{sec:orgc664034}
+\label{sec:orgb1a8e5c}
 
 \begin{itemize}
 \item \texttt{TPrsStd\_AISPresentation} class
@@ -615,14 +617,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \end{itemize}
 \section{TDataStd package}
-\label{sec:orgbe8d23c}
+\label{sec:org5d64f4e}
 
 \subsection{Overview}
-\label{sec:org9937773}
+\label{sec:org207e8c0}
 
 \texttt{TDataStd} 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
 \subsection{TDataStd 主要功能与职责}
-\label{sec:org01e6f62}
+\label{sec:orgb2a9e41}
 
 \begin{itemize}
 \item 基本数据类型的管理
@@ -650,7 +652,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \texttt{TDataStd} 的属性与 \texttt{TDF\_Label} 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
 \end{itemize}
 \subsection{TDataStd 的主要接口与功能}
-\label{sec:org7157bb1}
+\label{sec:orgdcd5be6}
 
 \begin{itemize}
 \item \texttt{TDataStd\_Integer}
@@ -689,88 +691,231 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item 主要接口: \texttt{Set}, \texttt{Get}
 \end{itemize}
 \end{itemize}
-\section{AppStdL package}
-\label{sec:org77854b6}
-
-\subsection{Overview}
-\label{sec:orgdf5016e}
-
-\texttt{AppStdL} (Application Standard Library) 包提供了标准化的应用程序级功能和服务，旨在简化复杂工程应用程序的开发过程。
-\subsection{AppStdL 的功能与职责}
-\label{sec:org4e4179a}
-
-\begin{itemize}
-\item 标准文档管理
-
-提供标准的文档管理功能，包括文档的创建、打开、保存、关闭等操作。这些操作通常是大多数工程应用程序的基础。
-
-\item 事务管理
-
-支持事务处理机制，允许对文档进行修改操作，并支持 Undo/Redo 功能。这对于保证数据的一致性和完整性非常重要。
-
-\item 用户界面交互
-
-提供与用户界面交互相关的标准功能，如命令处理、事件响应等。
-
-\item 数据存储和加载
-
-支持标准化的数据存储和加载机制，包括对不同格式的文件的处理，如 XML、二进制等。
-
-\item 应用程序配置
-
-提供应用程序配置的管理，允许存储和检索应用程序设置和参数。
-
-\item 资源管理
-
-管理应用程序所需的资源，如图像、图标、样式表等。
-\end{itemize}
-\subsection{AppStdL 主要接口与功能}
-\label{sec:org129e249}
-
-\begin{itemize}
-\item \texttt{AppStd\_Application} class
-
-\textbf{功能}: 作为应用程序的核心类，负责管理文档和用户界面的交互。
-
-\textbf{主要接口}: \texttt{NewDocument}, \texttt{OpenDocument}, \texttt{SaveDocument}, \texttt{CloseDocument}
-
-\item \texttt{AppStd\_Document} class
-
-功能: 代表应用程序中的单个文档，负责管理文档中的数据和事务。
-
-主要接口:
-
-\begin{itemize}
-\item \texttt{InitNew} 初始化一个新的文档
-\item \texttt{Open}, \texttt{Save} 打开/保存文档
-\item \texttt{Undo}, \texttt{Redo} 撤销/重做操作
-\end{itemize}
-
-\item \texttt{AppStd\_Command} class
-
-功能: 封装用户界面中的命令操作，用于处理事件和执行特定的动作。
-
-主要接口
-
-\begin{itemize}
-\item \texttt{Execute} 执行命令
-\item \texttt{Undo}, \texttt{Redo} 命令的撤销和重做
-\end{itemize}
-
-\item \texttt{AppStd\_Preferences} class
-
-功能: 管理应用程序的配置和偏好设置。
-
-主要接口:
-
-\begin{itemize}
-\item \texttt{ReadPreferences} 读取配置设置
-\item \texttt{WritePreferences} 写入配置设置
-\end{itemize}
-\end{itemize}
 \section{BinTObj package}
-\label{sec:orgc8f49d0}
+\label{sec:orgc0aa9ec}
 
 \section{XmlTObj packages}
-\label{sec:org31bca08}
+\label{sec:org7bd6464}
+
+\section{关键 Class 的串联}
+\label{sec:org39b8f0c}
+
+\subsection{\texttt{TDocStd\_Application}, \texttt{CDF\_Application}, \texttt{CDM\_Application} 三个类的主要接口及关系}
+\label{sec:orgef86a37}
+
+\begin{itemize}
+\item \texttt{TDocStd\_Application} 提供了高级的文档管理功能
+\begin{itemize}
+\item \texttt{NewDocument(format: String, \&TDocStd\_Document)} 创建一个新文档
+\item \texttt{Open(path: String, \&TDocStd\_Document)} 打开磁盘上的文档
+\item \texttt{SaveAs(TDocStd\_Document, path: String)} 保存文档到磁盘
+\item \texttt{Close(TDocStd\_Document)} 关闭给定文档
+\item \texttt{DefineFormat(format: String, \&rwDriver)} 设置指定格式的读写驱动
+\end{itemize}
+\item \texttt{CDF\_Application} (Cascade Document Framework) 提供了通用的文档管理接口，是=TDocStd\textsubscript{Application}= 的基类。
+\begin{itemize}
+\item \texttt{Open(\&CDM\_Document)} 将文档加入到 current session directory
+\item \texttt{Close(\&CDM\_Document)} 将文档从 current session directory 移除并关闭。
+\end{itemize}
+\item \texttt{CDM\_Application} (Cascade Document Management) 是更底层的文档管理类，提供文档管理的基础功能。
+\begin{itemize}
+\item 没看到啥值得注意的接口
+\end{itemize}
+\end{itemize}
+\section{开发环境搭建}
+\label{sec:orgdbd96d9}
+
+\subsection{Ubuntu 环境下编译与配置 OCCT 开发环境}
+\label{sec:org8b89026}
+
+\begin{enumerate}
+\item 安装依赖
+
+首先安装所有必要的依赖包，通常包括编译器、构建工具和其他库等。
+
+\begin{minted}[]{bash}
+  sudo apt-get update
+  sudo apt-get install build-essential cmake\
+      git libfreetype6-dev libfontconfig1-dev\
+      libx11-dev libxext-dev libxt-dev libxmu-dev\
+      libgl1-mesa-dev tcl-dev tk-dev
+\end{minted}
+
+\item 获取 OCCT 源代码
+
+你可以从 \href{https://dev.opencascade.org/release}{OpenCASCADE} 官网或 \href{https://github.com/Open-Cascade-SAS/OCCT}{GitHub} 上的仓库获取源代码。
+
+\begin{minted}[]{bash}
+  mkdir ~/geom
+  cd ~/geom
+  git clone https://github.com/Open-Cascade-SAS/OCCT.git
+\end{minted}
+
+\item 编译与安装 OCCT
+
+\begin{itemize}
+\item 使用 CMake 来配置构建系统，创建一个构建目录，在其中运行 cmake
+
+\begin{minted}[]{bash}
+    mkdir occt-build
+    mkdir occt-install
+    cd occt-build
+    cmake ../OCCT -DCMAKE_INSTALL_PREFIX=./occt-install
+\end{minted}
+
+\item 编译 OCCT 库: \texttt{make -j\$(nproc)}
+\item 安装 OCCT 库: \texttt{sudo make install}
+\end{itemize}
+
+\item 配置环境变量
+
+设置环境变量以使编译器和连接器能够找到 OCCT 的头文件和共享库。在 \texttt{\textasciitilde{}/.bashrc} 或 \texttt{\textasciitilde{}/.profile} 中添加如下内容
+
+\begin{minted}[]{shell}
+  export CASROOT=~/geom/occt-install
+  export LD_LIBRARY_PATH=$CASROOT/lib:$LD_LIBRARY_PATH
+\end{minted}
+\end{enumerate}
+\subsection{Arch Linux 环境下编译与配置 OCCT 开发环境}
+\label{sec:org1dfa2b6}
+
+\subsection{编写简单的 OCCT 程序}
+\label{sec:org8f6bb19}
+
+OCCT 安装完成后，我们可以通过编译运行一个简单的 OCCT 示例程序来验证安装。
+
+新建项目目录 \texttt{\textasciitilde{}/hello-occt/}, 新建项目文件 \texttt{CMakeLists.txt} 和 \texttt{main.cpp}. \texttt{CMakeLists.txt} 的内容如下：
+
+\begin{minted}[]{cmake}
+cmake_minimum_required(VERSION 3.10)
+project(hello-occt)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(OpenCASCADE REQUIRED)
+
+include_directories(${OpenCASCADE_INCLUDE_DIR})
+
+set(SOURCES main.cpp)
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+
+target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})
+\end{minted}
+
+\begin{itemize}
+\item \texttt{project(hello-occt)} 设置项目的名称
+\item \texttt{set(CMAKE\_CXX\_STANDARD 17)} 指定 C++ 标准
+\item \texttt{find\_package(OpenCASCADE REQUIRED)} 查找并加载 OCCT 库
+\item \texttt{include\_directories(\$\{OpenCASCADE\_INCLUDE\_DIR\})} 添加 OCCT 头文件的路径
+\item \texttt{set(SOURCES ...)} 定义了项目的源文件
+\item \texttt{add\_executable(\$\{CMAKE\_PROJECT\_NAME\} \$\{SOURCES\})} 创建一个可执行文件
+\item \texttt{target\_link\_libraries(\$\{CMAKE\_PROJECT\_NAME\} \$\{OpenCASCADE\_LIBRARIES\})} 链接 OCCT 库
+\end{itemize}
+
+源码文件 \texttt{main.cpp} 的内容如下
+
+\begin{minted}[]{cpp}
+#include <iostream>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <TopoDS_Shape.hxx>
+
+int main() {
+  BRepPrimAPI_MakeBox box(1., 2., 3.);
+  const TopoDS_Shape& shape = box.Shape();
+  std::cout << "Hello OCCT" << std::endl;
+  return 0;
+}
+\end{minted}
+
+按照如下的方式编译并执行程序
+
+\begin{minted}[]{bash}
+mkdir build
+cd build
+cmake ..
+cmake --build .
+./hello-occt
+\end{minted}
+
+程序执行成功的话，会打印 \texttt{Hello OCCT} 。
+下面穿插介绍一下涉及的 OCCT clases。
+\subsection{相关的 OCCT 类}
+\label{sec:orgd9a0094}
+
+\subsubsection{\texttt{BRepPrimAPI\_MakeBox} class}
+\label{sec:org12214df}
+
+\texttt{BRepPrimAPI\_MakeBox} 这个类是 OCCT 中 BRep 建模的一部分，用于创建三维的长方体(盒子)。长方体可以通过指定宽度、高度和深度来定义，也可以通过其他方式如两个对角点或中心点和尺寸来定义。它的一些关键接口有：
+
+\begin{itemize}
+\item \texttt{BRepPrimAPI\_MakeBox(gp\_Pnt\& P, Standard\_Real dx, Standard\_Real dy, Standard\_Real dz)}: 以点 \texttt{P} 作为长方体的一个角，并指定长方体在三个方向上的尺寸 \texttt{(dx, dy, dz)} 来创建长方体。
+\item \texttt{BRepPrimAPI\_MakeBox(Standard\_Real dx, Standard\_Real dy, Standard\_Real dz)}: 创建一个以原点为一个角的长方体，尺寸为 \texttt{(dx, dy, dz)}
+\item \texttt{BRepPrimAPI\_MakeBox(gp\_Pnt\& P1, gp\_Pnt\& P2)}: 以两个对角点 \texttt{P1} 和 \texttt{P2} 来创建长方体。
+\item \texttt{BRepPrimAPI\_MakeBox(gp\_Ax2\& Axes, Standard\_Real dx, Standard\_Real dy, Standard\_Real dz)}: 以 \texttt{Axes} 定义的坐标系为参考，创建尺寸为 \texttt{(dx, dy, dz)} 的长方体
+\item \texttt{Shape()} 方法可以获取生成的长方体形状 (\texttt{TopoDS\_Shape} 类型)。
+\end{itemize}
+\subsubsection{\texttt{TopoDS\_Shape} class}
+\label{sec:org4580fc5}
+
+\texttt{TopoDS\_Shape} 是 OCCT 的一个核心类，用于表示和操作几何形状。 \texttt{TopoDS\_Shape} 是所有几何形状的基类，包括点、线、面、实体等，它为各种几何实体提供了一种通用的访问和操作方式。它的一些重要的接口有:
+
+\begin{itemize}
+\item \texttt{IsNull()}: 检查形状是否为空（引用为空）。
+\item \texttt{IsEmpty()}: 检查形状是否为空或没有几何信息。
+\item \texttt{TShape()}: 返回 Shape 的一个 handle。
+\item \texttt{Orientation()}, \texttt{Orientation(TopAbs\_Orientation)}: 获取和设置 Shape 的方向
+\item \texttt{Location()}, \texttt{Location(const TopLoc\_Location\&)}: 获取和设置 Shape 的局部坐标系(local coordinate system)
+\item \texttt{Located(const TopLoc\_Location\&)}: 获取一个当前 Shape 在新位置处的副本。
+\item \texttt{Move(const TopLoc\_Location\&)}: 移动 Shape 的位置。
+\item \texttt{Moved(const TopLoc\_Location\&)}: 获取一个当前 Shape 移动后的副本
+\item \texttt{Reverse()}: 反转形状的方向 (orientation)
+\item \texttt{Reversed()}: 获取一个当前 Shape 反转方向后的副本
+\item \texttt{ShapeType()}: 获取 Shape 的类型，如 \texttt{TopAbs\_VERTEX}, \texttt{TopAbs\_EDGE}, \texttt{TopAbs\_FACE} 等。
+\end{itemize}
+\section{一个简单的 OCAF 程序}
+\label{sec:orgad26f40}
+
+\subsection{程序源码}
+\label{sec:orgf1cf85d}
+
+\begin{minted}[]{cpp}
+#include <TDocStd_Application.hxx>
+#include <TDataStd_Integer.hxx>
+#include <BinDrivers.hxx>
+
+int main() {
+  Handle(TDocStd_Application) app = new TDocStd_Application;
+  BinDrivers::DefineFormat(app);
+
+  Handle(TDocStd_Document) doc;
+  app->NewDocument("BinOcaf", doc);
+
+  if (doc.IsNull()) {
+    std::cout << "Error: cannot create an OCAF document" << std::endl;
+    return 1;
+  }
+
+  TDF_Label mainLab = doc->Main();
+  TDataStd_Integer::Set(mainLab, 42);
+
+  auto sstatus = app->SaveAs(doc, "./test.cbf");
+  if (sstatus != PCDM_SS_OK) {
+    app->Close(doc);
+    std::cout << "Cannot write OCAF document" << std::endl;
+    return 1;
+  }
+
+  app->Close(doc);
+  return 0;
+}
+\end{minted}
+
+上面的程序编译并执行后，会在当前目录下创建一个名为 \texttt{test.cbf} 的 OCC 二进制文档。我们可以大致查看一下二进制内容，如下图
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{./img/binocaf-binary-content.png}
+\end{center}
+
+我们可以大致看到文档中包含了 creation-date file\textsubscript{format}, reference-counter, modification-counter, \texttt{TDataStd\_Integer} 等一些信息。
 \end{document}
