@@ -6,13 +6,14 @@
 
 * Introduction
 
-** Overview
+** OCAF Module
 
+*** Overview
 Open CASCADE Technology (OCCT) 是一个开源的软件开发平台，用于三维 CAD、CAM、CAE 系统的开发。它提供了广泛的功能，涵盖了几何建模、图形可视化、数据交换和更多方面。
 
 Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OCAF 是一个应用程序框架，用于简化复杂工程图形应用程序的开发。它提供了一种有效的方式来组织、存储、检索和操作复杂的工程数据。OCAF 特别适合于需要处理复杂的装配结构、历史记录、参数化设计等场景的应用程序。
 
-** OCAF 的主要功能
+*** OCAF 的主要功能
 
 + 数据管理
   - OCAF 提供了一套工具来有效地管理和组织数据。
@@ -28,7 +29,7 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 
 通过 OCAF，开发者可以更专注于应用的核心功能，而不是底层的数据管理和操作。
 
-** OCAF 的主要 Packages
+*** OCAF 的主要 Packages
 
 下面列出了一些在 OCAF 中常用且重要的 packages:
 
@@ -58,32 +59,14 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 + *XmlTObj*
   - 类似于 BinTObj，但用于处理基于 XML 的持久化存储和加载。
 
-** 如何学习掌握 OCCT 及 OCAF
 
-+ 基础了解
-  - 了解 OCCT 的基本概念，包括主要组件、功能和应用场景
-  - 熟悉 OCAF 模块的基本概念，如 Label, Tag, Attribute 等。
-+ 阅读官方文档
-+ 学习示例代码
-  - 查看和分析 OCCT 提供的示例代码，尤其是设计 OCAF 的示例。
-  - 通过理解代码，你可以更好地了解如何在实际项目中使用 OCAF 模块。
-+ 小型项目实践
-  - 开始一个小型的项目，使用 OCAF 模块来实现一些基本功能。比如一个简单的 CAD 工具或任何需要数据组织和管理的应用。
-  - 在实践中尝试创建、修改和管理 Label、Tag 和 Attribute，以及处理事务和历史记录。
-+ 深入学习高级特性
-  - 当你对基本功能有一定理解后，开始学习 OCAF 的高级特性，如复杂的数据关系管理、历史版本控制、自定义属性类型等。
-+ 参与社区讨论
-+ 查阅相关书籍和资源
-+ 实际项目经验
+** TDF Package
 
-
-* TDF Package
-
-** Overview
+*** Overview
 
 TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织复杂的工程数据（其中拓扑数据是几何建模的基础）。TDF 提供了一个结构化的方式来存储和操作与拓扑相关的信息，如点、线、面、实体等几何元素及其之间的关系。
 
-** TDF 的功能与职责
+*** TDF 的功能与职责
 
 + 数据组织
 
@@ -109,63 +92,21 @@ TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织�
 
   TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制。
 
-** TDF 的主要接口及功能
+*** TDF 的核心类
 
-+ =TDF_Label= class
-
-  *功能*: 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
-
-  *主要接口*: =FindChild=, =NewChild=, =HashAttribute=, =AddAttribute=, =FindAttribute=, =ForEach= 等。
-
-  - =FindChild= 查找或创建 sub-label
-  - =NewChild= 创建一个新的 sub-label
-  - =HasAttribute= 检查是否存在特定类型的 Attribute
-  - =AddAttribute= 添加一个新的 Attribute
-  - =FindAttribute= 查找特定类型的 Attribute
-
-+ =TDF_Attribute= class
-
-  *功能*: 附加在 Label 上的数据单元，用于存储特定类型的信息，如几何数据、颜色、文本等。
-
-  *主要接口*: =Set=, =Get=, =NewEmpty=, =Restore=, =Paste= 等
-
-  - =NewEmpty= 创建一个新的空 Attribute 实例
-  - =Restore= 从备份中恢复 Attribute 的状态
-  - =Paste= 复制或转移 Attribute 的内容
-
-+ =TDF_Data= class
-
-  *功能*: 代表整个数据集合，包含一个或多个 =TDF_Label= 树
-
-  *主要接口*:
-
-  - =Root= 获取数据几何的 root label
-  - =TransactionStart=, =TransactionCommit= 开始和提交事务
-  - =Undo=, =Redo= 支持撤销和重做操作
-
-+ =TDF_TagSource= class
-
-  *功能*: 用于自动生成唯一的 Tag (标签号)。
-
-  *主要接口*: =NewTag= 生成一个新的唯一 Tag。
-
-+ =TDF_RelocationTable= class
-
-  *功能*: 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
-
-  *主要接口*:
-
-  - =SetRelocation= 设置新旧 Label 或 Attribute 之间的映射
-  - =HasRelocation= 检查是否存在特定的映射
-  - =Relocation= 获取映射的目标
++ =TDF_Label= class 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
++ =TDF_Attribute= class 附加在 Label 上的数据单元，用于存储特定类型的信息，如几何数据、颜色、文本等。
++ =TDF_Data= class 代表整个数据集合，包含一个或多个 =TDF_Label= 树
++ =TDF_TagSource= class 用于自动生成唯一的 Tag (标签号)。
++ =TDF_RelocationTable= class 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
 
 
-* TDocStd Package
+** TDocStd Package
 
-** Overview
+*** Overview
 =TDocStd= 主要用于处理和管理文档(Document)，这些文档用于存储和组织复杂的 CAD 数据结构。一个文档通常代表一个工程项目或一个 CAD 模型，它包含了所有相关的数据和信息。 =TDocStd= 提供了一套工具和接口来创建、管理和存储这些文档。
 
-** TDocStd 的功能与职责
+*** TDocStd 的功能与职责
 
 + 文档管理
 
@@ -191,7 +132,7 @@ TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织�
 
   =TDocStd= 的设计允许开发者根据需要扩展和定制文档的功能，以适应特定的应用需求。
 
-** TDocStd 与 TDF package 的关系
+*** TDocStd 与 TDF package 的关系
 
 + =TDocStd= 依赖于 =TDF= 来组织文档内的数据。
 
@@ -199,47 +140,20 @@ TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织�
 
 + 在 TDF 基础上，TDocStd 提供了文档级别的管理，如创建/保存/加载文档、事务处理(Undo/Redo)等。
 
-** TDocStd 的主要接口及功能
+*** TDocStd 的核心类
 
-+ =TDocStd_Document= class
-
-  *功能*: 代表一个文档，是管理和组织 CAD 数据的主要实体。
-
-  *主要接口*:
-
-  - =NewCommand()= 开始一个新的命令或操作
-  - =CommitCommand()= 提交当前命令，使其更改称为文档的一部分
-  - =Undo()=, =Redo()= 撤销和重做
-  - =Save()=, =Open()= 文档的存储和加载
-
-+ =TDocStd_Application= class
-
-  *功能*: 处理文档的创建、加载和保存，管理文档集合。
-
-  *主要接口*:
-
-  - =NewDocument()= 创建一个新的文档
-  - =SaveAs()=, =Open()= 保存和打开文档
-  - =GetFormats()= 获取支持的文档格式列表
-  - =Close()= 关闭文档
++ =TDocStd_Document= class 代表一个文档，是管理和组织 CAD 数据的主要实体。
++ =TDocStd_Application= class 处理文档的创建、加载和保存，管理文档集合。
++ =TDocStd_Owner= class 作为文档所有者的角色，管理文档的状态和事务。
 
 
-+ =TDocStd_Owner= class
+** XCAF Package (属于 DataExchange Module)
 
-  *功能*: 作为文档所有者的角色，管理文档的状态和事务。
-
-  *主要接口*:
-  - =SetDocument= 设置或关联文档
-  - =BeforeUndo=, =AfterUndo= 撤销操作前后的处理函数。
-
-
-* XCAF Package (属于 DataExchange Module)
-
-** Overview
+*** Overview
 
 XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是那些涉及到复杂装配结构的数据。XCAF 提供了一些列工具和接口，用于管理和操作包括颜色、材料、元数据、层级关系等在内的复杂 CAD 模型数据。
 
-** XCAF 主要功能与职责
+*** XCAF 主要功能与职责
 
 + 复杂装配结构管理
 
@@ -265,73 +179,23 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
 
   XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 
-** XCAF 的主要接口与功能
+*** XCAF 的核心类
 
-+ =XCAFDoc_ShapeTool= class
-
-  *功能*: 用于管理装配结构和形状。
-
-  *主要接口*:
-
-  - =GetShape= 获取形状
-  - =AddShape= 添加新的形状
-  - =GetSubShapes=, =GetSubShapeExt= 获取子形状
-  - =GetAssembly= 获取装配体
-
-+ =XCAFDoc_ColorTool= class
-
-  *功能*: 管理颜色属性
-
-  *主要接口*:
-
-  - =SetColor= 为形状设置颜色
-  - =GetColor= 获取形状的颜色
-  - =RemoveColor= 移除形状的颜色
-
-+ =XCAFDoc_LayerTool= class
-
-  *功能*: 管理图层属性
-
-  *主要接口*:
-
-  - =SetLayer= 为形状设置图层
-  - =GetLayers= 获取形状的图层
-
-+ =XCAFDoc_MaterialTool= class
-
-  *功能*: 管理材料属性
-
-  *主要接口*:
-
-  - =SetMaterial= 为形状设置材料
-  - =GetMaterial= 获取形状的材料
-
-+ =XCAFDoc_DatumTool=, =XCAFDoc_DimTolTool= classes
-
-  *功能*: 管理标注和公差。
-
-  *主要接口*:
-
-  - =AddDatum=, =AddDimTol= 添加新的标注或公差
-  - =GetDatum=, =GetDimTol= 获取标注或公差
-
-+ =XCAFDoc_AreaStyleTool= class
-
-  *功能*: 管理区域样式
-
-  *主要接口*
-
-  - =SetAreaStyle= 为形状设置区域样式
-  - =GetAreaStyle= 获取形状的区域样式
++ =XCAFDoc_ShapeTool= class 用于管理装配结构和形状。
++ =XCAFDoc_ColorTool= class 管理颜色属性
++ =XCAFDoc_LayerTool= class 管理图层属性
++ =XCAFDoc_MaterialTool= class 管理材料属性
++ =XCAFDoc_DatumTool=, =XCAFDoc_DimTolTool= classes 管理标注和公差。
++ =XCAFDoc_AreaStyleTool= class 管理区域样式
 
 
-* TNaming package
+** TNaming package
 
-** Overview
+*** Overview
 
 =TNaming= 提供了命名服务，以便在复杂的 CAD 模型和数据结构中标识和追踪对象。这对于在模型变更过程中保持对特定对象的引用非常重要。
 
-** TNaming 的主要功能与职责
+*** TNaming 的主要功能与职责
 
 + 对象标识和追踪
 
@@ -357,61 +221,22 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
 
   支持与 OCAF 的撤销/重做机制结合使用，确保在运行这些操作时保持命名信息的一致性。
 
-** TNaming 的主要接口与功能
+*** TNaming 的核心类
 
-+ =TNaming_NamedShape= class
-
-  *功能*: 用于关联形状(Shape)与名称，实现形状的命名和追踪。
-
-  *主要接口*
-
-  - =Get= 获取与名称关联的形状
-  - =Set= 设置或更新名称与形状的关联
-
-+ =TNaming_Builder= class
-
-  *功能*: 用于构建和修改命名关系
-
-  *主要接口*
-
-  - =Select= 为给定的形状选择或创建一个名称
-  - =Generate= 生成一个新的名称
-
-+ =TNaming_Tool= class
-
-  *功能*: 提供一系列静态方法来操作和查询命名信息
-
-  *主要接口*
-
-  - =GetShape= 根据名称获取形状
-  - =GetLabel= 获取与特定形状关联的标签
-
-+ =TNaming_Naming= class
-
-  *功能*: 存储和管理命名操作的历史记录。
-
-  *主要接口*
-
-  - =GetName= 获取命名操作的名称
-  - =GetShapes= 获取命名操作影响的形状列表
-
-+ =TNaming_NamingTool= class
-
-  *功能*: 提供用于执行复杂命名操作的高级方法
-
-  *主要接口*
-
-  - =Solve= 解决命名冲突
-  - =LoadNamedShapes= 加载命名形状
++ =TNaming_NamedShape= class 用于关联形状(Shape)与名称，实现形状的命名和追踪。
++ =TNaming_Builder= class 用于构建和修改命名关系
++ =TNaming_Tool= class 提供一系列静态方法来操作和查询命名信息
++ =TNaming_Naming= class 存储和管理命名操作的历史记录。
++ =TNaming_NamingTool= class 提供用于执行复杂命名操作的高级方法
 
 
-* TPrsStd package
+** TPrsStd package
 
-** Overview
+*** Overview
 
 =TPrsStd= package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
 
-** TPrsStd 主要功能与职责
+*** TPrsStd 主要功能与职责
 
 + 图形表示管理
 
@@ -441,53 +266,21 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
 
   可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
 
-** TPrsStd 的主要接口与功能
+*** TPrsStd 的核心类
 
-+ =TPrsStd_AISPresentation= class
-
-  *功能*: 用于管理工程数据的图形表示，如形状在图形界面中的显示。
-
-  *主要接口*
-
-  - =SetDriver= 设置用于显示的驱动程序。
-  - =Update= 更新图形表示以反映数据的更改。
-  - =Display=, =Erase= 控制对象的显示和隐藏。
-
-+ =TPrsStd_AISViewer= class
-
-  *功能*: 提供一个视图环境，用于显示和管理多个图形表示。
-
-  *主要接口*
-
-  - =Update= 更新视图中的所有表示
-  - =SetView= 设置或更改关联的视图
-
-+ =TPrsStd_Presentation= class
-
-  *功能*: 作为数据和其图形表示之间的桥梁。
-
-  *主要接口*
-
-  - =Set= 关联数据和图形表示。
-  - =Get= 获取与数据关联的图形表示。
-
-+ =TPrsStd_Driver= class
-
-  *功能*: 为具体的数据类型提供图形表示的生成和更新逻辑。
-
-  *主要接口*
-
-  - =Update= 根据数据更新图形表示。
-  - =Create= 根据给定的数据创建新的图形表示。
++ =TPrsStd_AISPresentation= class 用于管理工程数据的图形表示，如形状在图形界面中的显示。
++ =TPrsStd_AISViewer= class 提供一个视图环境，用于显示和管理多个图形表示。
++ =TPrsStd_Presentation= class 作为数据和其图形表示之间的桥梁。
++ =TPrsStd_Driver= class 为具体的数据类型提供图形表示的生成和更新逻辑。
 
 
-* TDataStd package
+** TDataStd package
 
-** Overview
+*** Overview
 
 =TDataStd= 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
 
-** TDataStd 主要功能与职责
+*** TDataStd 主要功能与职责
 
 + 基本数据类型的管理
 
@@ -513,50 +306,20 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
 
   =TDataStd= 的属性与 =TDF_Label= 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
 
-** TDataStd 的主要接口与功能
+*** TDataStd 的核心类
 
-+ =TDataStd_Integer=
-  - 功能: 用于存储和管理整数值
-  - 主要接口: =Set=, =Get=
-+ =TDataStd_Real=
-  - 功能: 用于存储和管理实数值
-  - 主要接口: =Set=, =Get=
-+ =TDataStd_String=
-  - 功能: 用于存储和管理字符串
-  - 主要接口: =Set=, =Get=
-+ =TDataStd_UAttribute=
-  - 功能: 作为用户自定义数据的基类，可以派生出用于存储特定类型数据的类。
-  - 主要接口: =SetID= 设置属性的唯一标识符
-+ =TDataStd_Name=
-  - 功能: 用于存储和管理对象的名称
-  - 主要接口: =Set=, =Get=
-+ =TDataStd_Boolean=
-  - 功能: 用于存储和管理布尔值
-  - 主要接口: =Set=, =Get=
-+ =TDataStd_Enum=
-  - 功能: 用于存储和管理枚举值
-  - 主要接口: =Set=, =Get=
++ =TDataStd_Integer= 用于存储和管理整数值
++ =TDataStd_Real= 用于存储和管理实数值
++ =TDataStd_String= 用于存储和管理字符串
++ =TDataStd_UAttribute= 作为用户自定义数据的基类，可以派生出用于存储特定类型数据的类。
++ =TDataStd_Name= 用于存储和管理对象的名称
++ =TDataStd_Boolean= 用于存储和管理布尔值
++ =TDataStd_Enum= 用于存储和管理枚举值
 
 
-* BinTObj package
+** BinTObj package
 
-* XmlTObj packages
-
-* 关键 Class 的串联
-
-** =TDocStd_Application=, =CDF_Application=, =CDM_Application= 三个类的主要接口及关系
-
-+ =TDocStd_Application= 提供了高级的文档管理功能
-  - =NewDocument(format: String, &TDocStd_Document)= 创建一个新文档
-  - =Open(path: String, &TDocStd_Document)= 打开磁盘上的文档
-  - =SaveAs(TDocStd_Document, path: String)= 保存文档到磁盘
-  - =Close(TDocStd_Document)= 关闭给定文档
-  - =DefineFormat(format: String, &rwDriver)= 设置指定格式的读写驱动
-+ =CDF_Application= (Cascade Document Framework) 提供了通用的文档管理接口，是=TDocStd_Application= 的基类。
-  - =Open(&CDM_Document)= 将文档加入到 current session directory
-  - =Close(&CDM_Document)= 将文档从 current session directory 移除并关闭。
-+ =CDM_Application= (Cascade Document Management) 是更底层的文档管理类，提供文档管理的基础功能。
-  - 没看到啥值得注意的接口
+** XmlTObj packages
 
 
 * 开发环境搭建
@@ -608,7 +371,6 @@ XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是�
   export LD_LIBRARY_PATH=$CASROOT/lib:$LD_LIBRARY_PATH
   #+end_src
 
-** Arch Linux 环境下编译与配置 OCCT 开发环境
 
 ** 编写简单的 OCCT 程序
 
@@ -641,7 +403,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})
 + =add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})= 创建一个可执行文件
 + =target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})= 链接 OCCT 库
 
-源码文件 =main.cpp= 的内容如下
+下面的验证程序，创建一个简单的长方体，然后获取其 Topo Shape。源代码文件 =main.cpp= 如下
 
 #+begin_src cpp
 #include <iostream>
@@ -697,9 +459,11 @@ cmake --build .
 + =Reversed()=: 获取一个当前 Shape 反转方向后的副本
 + =ShapeType()=: 获取 Shape 的类型，如 =TopAbs_VERTEX=, =TopAbs_EDGE=, =TopAbs_FACE= 等。
 
-* 一个简单的 OCAF 程序
+* 一个基本的 OCAF 程序
 
 ** 程序源码
+
+下面的程序代码，创建了一个 App，在 App 内新建一个 Doc 文档，然后在 Main Label 下插入一个 Integer Attribute，最后保存到磁盘文件，并关闭内存中的文件。
 
 #+begin_src cpp
 #include <TDocStd_Application.hxx>
@@ -740,3 +504,40 @@ int main() {
 我们可以大致看到文档中包含了 creation-date file-format, reference-counter, modification-counter, =TDataStd_Integer= 等一些信息。
 
 ** 相关的 OCCT 类
+
+*** =TDocStd_Application= class
+
+类 =TDocStd_Application= 用于创建、打开、保存、关闭和管理 OCAF 文档(=TDocStd_Document=)，支持多文档界面(MDI)，允许同时处理多个文档。它是开发基于 OCAF 的应用程序的关键组件。
+
++ =NewDocument(format: String, TDocStd_Document&)= 创建一个新的文档
++ =Open(path: String, TDocStd_Document&)= 打开磁盘上的一个文档
++ =Save(TDocStd_Document&)= 保存文档
++ =SaveAs(TDocStd_Document&, path: String)= 文档另存为
++ =Close(TDocStd_Document&)= 关闭文档
+
+*** =TDocStd_Document= class
+
+类 =TDocStd_Document= 代表一个 OCAF 文档，用于存储和管理复杂的工程数据。它包含一个或多个层次化的数据结构（通过 =TDF_Label= 组织）。OCAF 文档支持事务处理机制，提供了 Undo/Redo 接口；支持文档的保存和加载。
+
++ =IsSaved()= 检查文档是否已保存
++ =IsEmpty()= 检查文档是否为空，即 main label 是否包含 attributes
++ =NewCommand()= 启动一个新的事务或命令
++ =CommitCommand()= 提交当前事务，使其更改称为文档的一部分
++ =Undo()=, =Redo()= 撤销或重做最近的事务
++ =GetUndoLimit()=, =SetUndoLimit(int)= 获取和设置撤销操作的限制
++ =IsChanged()= 检查文档子上次保存后是否被修改
++ =SetModified(TDF_Label&)= 标记一个 label 为 modified，文档变为 UnValid 状态
++ =Recompute()= 重新计算，传播 modification 的影响
++ =IsValid()= 检查文档修改后，是否重新计算了
++ =Main()= 获取文档的 main label
++ =DumpJson(OStream&)= 打印文档内容，用于调试
+
+*** =TDF_Label= class
+
+类 =TDF_Label=
+
+*** =TDataStd_Integer= class
+
+*** =BinDrivers= class
+
+OCAF 中如何实现参数化设计的

@@ -1,4 +1,4 @@
-% Created 2024-01-17 Wed 17:50
+% Created 2024-01-18 Thu 11:19
 % Intended LaTeX compiler: xelatex
 \documentclass[11pt]{article}
 \usepackage{graphicx}
@@ -30,16 +30,18 @@
 \tableofcontents
 
 \section{Introduction}
-\label{sec:orgeb60ec6}
+\label{sec:org5ef4d95}
 
-\subsection{Overview}
-\label{sec:orgae51fd3}
+\subsection{OCAF Module}
+\label{sec:orga0d6b3b}
 
+\subsubsection{Overview}
+\label{sec:org050532e}
 Open CASCADE Technology (OCCT) 是一个开源的软件开发平台，用于三维 CAD、CAM、CAE 系统的开发。它提供了广泛的功能，涵盖了几何建模、图形可视化、数据交换和更多方面。
 
 Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OCAF 是一个应用程序框架，用于简化复杂工程图形应用程序的开发。它提供了一种有效的方式来组织、存储、检索和操作复杂的工程数据。OCAF 特别适合于需要处理复杂的装配结构、历史记录、参数化设计等场景的应用程序。
-\subsection{OCAF 的主要功能}
-\label{sec:org4c40ce4}
+\subsubsection{OCAF 的主要功能}
+\label{sec:org2a842a2}
 
 \begin{itemize}
 \item 数据管理
@@ -66,8 +68,8 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \end{itemize}
 
 通过 OCAF，开发者可以更专注于应用的核心功能，而不是底层的数据管理和操作。
-\subsection{OCAF 的主要 Packages}
-\label{sec:org4ce0a77}
+\subsubsection{OCAF 的主要 Packages}
+\label{sec:org69fef56}
 
 下面列出了一些在 OCAF 中常用且重要的 packages:
 
@@ -116,43 +118,15 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \item 类似于 BinTObj，但用于处理基于 XML 的持久化存储和加载。
 \end{itemize}
 \end{itemize}
-\subsection{如何学习掌握 OCCT 及 OCAF}
-\label{sec:orga1f79b2}
+\subsection{TDF Package}
+\label{sec:org965c18f}
 
-\begin{itemize}
-\item 基础了解
-\begin{itemize}
-\item 了解 OCCT 的基本概念，包括主要组件、功能和应用场景
-\item 熟悉 OCAF 模块的基本概念，如 Label, Tag, Attribute 等。
-\end{itemize}
-\item 阅读官方文档
-\item 学习示例代码
-\begin{itemize}
-\item 查看和分析 OCCT 提供的示例代码，尤其是设计 OCAF 的示例。
-\item 通过理解代码，你可以更好地了解如何在实际项目中使用 OCAF 模块。
-\end{itemize}
-\item 小型项目实践
-\begin{itemize}
-\item 开始一个小型的项目，使用 OCAF 模块来实现一些基本功能。比如一个简单的 CAD 工具或任何需要数据组织和管理的应用。
-\item 在实践中尝试创建、修改和管理 Label、Tag 和 Attribute，以及处理事务和历史记录。
-\end{itemize}
-\item 深入学习高级特性
-\begin{itemize}
-\item 当你对基本功能有一定理解后，开始学习 OCAF 的高级特性，如复杂的数据关系管理、历史版本控制、自定义属性类型等。
-\end{itemize}
-\item 参与社区讨论
-\item 查阅相关书籍和资源
-\item 实际项目经验
-\end{itemize}
-\section{TDF Package}
-\label{sec:orgbb2164b}
-
-\subsection{Overview}
-\label{sec:org4a7fd89}
+\subsubsection{Overview}
+\label{sec:orgcdc37b1}
 
 TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织复杂的工程数据（其中拓扑数据是几何建模的基础）。TDF 提供了一个结构化的方式来存储和操作与拓扑相关的信息，如点、线、面、实体等几何元素及其之间的关系。
-\subsection{TDF 的功能与职责}
-\label{sec:orgfb50402}
+\subsubsection{TDF 的功能与职责}
+\label{sec:org2f1476c}
 
 \begin{itemize}
 \item 数据组织
@@ -179,74 +153,24 @@ TDF 支持数据的版本控制，这对于跟踪数据的历史变更非常有�
 
 TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制。
 \end{itemize}
-\subsection{TDF 的主要接口及功能}
-\label{sec:orga4b2c2a}
+\subsubsection{TDF 的核心类}
+\label{sec:org15c0267}
 
 \begin{itemize}
-\item \texttt{TDF\_Label} class
-
-\textbf{功能}: 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
-
-\textbf{主要接口}: \texttt{FindChild}, \texttt{NewChild}, \texttt{HashAttribute}, \texttt{AddAttribute}, \texttt{FindAttribute}, \texttt{ForEach} 等。
-
-\begin{itemize}
-\item \texttt{FindChild} 查找或创建 sub-label
-\item \texttt{NewChild} 创建一个新的 sub-label
-\item \texttt{HasAttribute} 检查是否存在特定类型的 Attribute
-\item \texttt{AddAttribute} 添加一个新的 Attribute
-\item \texttt{FindAttribute} 查找特定类型的 Attribute
+\item \texttt{TDF\_Label} class 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
+\item \texttt{TDF\_Attribute} class 附加在 Label 上的数据单元，用于存储特定类型的信息，如几何数据、颜色、文本等。
+\item \texttt{TDF\_Data} class 代表整个数据集合，包含一个或多个 \texttt{TDF\_Label} 树
+\item \texttt{TDF\_TagSource} class 用于自动生成唯一的 Tag (标签号)。
+\item \texttt{TDF\_RelocationTable} class 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
 \end{itemize}
+\subsection{TDocStd Package}
+\label{sec:org0bc716f}
 
-\item \texttt{TDF\_Attribute} class
-
-\textbf{功能}: 附加在 Label 上的数据单元，用于存储特定类型的信息，如几何数据、颜色、文本等。
-
-\textbf{主要接口}: \texttt{Set}, \texttt{Get}, \texttt{NewEmpty}, \texttt{Restore}, \texttt{Paste} 等
-
-\begin{itemize}
-\item \texttt{NewEmpty} 创建一个新的空 Attribute 实例
-\item \texttt{Restore} 从备份中恢复 Attribute 的状态
-\item \texttt{Paste} 复制或转移 Attribute 的内容
-\end{itemize}
-
-\item \texttt{TDF\_Data} class
-
-\textbf{功能}: 代表整个数据集合，包含一个或多个 \texttt{TDF\_Label} 树
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{Root} 获取数据几何的 root label
-\item \texttt{TransactionStart}, \texttt{TransactionCommit} 开始和提交事务
-\item \texttt{Undo}, \texttt{Redo} 支持撤销和重做操作
-\end{itemize}
-
-\item \texttt{TDF\_TagSource} class
-
-\textbf{功能}: 用于自动生成唯一的 Tag (标签号)。
-
-\textbf{主要接口}: \texttt{NewTag} 生成一个新的唯一 Tag。
-
-\item \texttt{TDF\_RelocationTable} class
-
-\textbf{功能}: 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{SetRelocation} 设置新旧 Label 或 Attribute 之间的映射
-\item \texttt{HasRelocation} 检查是否存在特定的映射
-\item \texttt{Relocation} 获取映射的目标
-\end{itemize}
-\end{itemize}
-\section{TDocStd Package}
-\label{sec:org6104c37}
-
-\subsection{Overview}
-\label{sec:org0b1b8b4}
+\subsubsection{Overview}
+\label{sec:org45868a7}
 \texttt{TDocStd} 主要用于处理和管理文档(Document)，这些文档用于存储和组织复杂的 CAD 数据结构。一个文档通常代表一个工程项目或一个 CAD 模型，它包含了所有相关的数据和信息。 \texttt{TDocStd} 提供了一套工具和接口来创建、管理和存储这些文档。
-\subsection{TDocStd 的功能与职责}
-\label{sec:org301ce90}
+\subsubsection{TDocStd 的功能与职责}
+\label{sec:org2e7f174}
 
 \begin{itemize}
 \item 文档管理
@@ -273,8 +197,8 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 
 \texttt{TDocStd} 的设计允许开发者根据需要扩展和定制文档的功能，以适应特定的应用需求。
 \end{itemize}
-\subsection{TDocStd 与 TDF package 的关系}
-\label{sec:org789d503}
+\subsubsection{TDocStd 与 TDF package 的关系}
+\label{sec:org809ca32}
 
 \begin{itemize}
 \item \texttt{TDocStd} 依赖于 \texttt{TDF} 来组织文档内的数据。
@@ -283,58 +207,23 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 
 \item 在 TDF 基础上，TDocStd 提供了文档级别的管理，如创建/保存/加载文档、事务处理(Undo/Redo)等。
 \end{itemize}
-\subsection{TDocStd 的主要接口及功能}
-\label{sec:org01dbc11}
+\subsubsection{TDocStd 的核心类}
+\label{sec:org59ea273}
 
 \begin{itemize}
-\item \texttt{TDocStd\_Document} class
-
-\textbf{功能}: 代表一个文档，是管理和组织 CAD 数据的主要实体。
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{NewCommand()} 开始一个新的命令或操作
-\item \texttt{CommitCommand()} 提交当前命令，使其更改称为文档的一部分
-\item \texttt{Undo()}, \texttt{Redo()} 撤销和重做
-\item \texttt{Save()}, \texttt{Open()} 文档的存储和加载
+\item \texttt{TDocStd\_Document} class 代表一个文档，是管理和组织 CAD 数据的主要实体。
+\item \texttt{TDocStd\_Application} class 处理文档的创建、加载和保存，管理文档集合。
+\item \texttt{TDocStd\_Owner} class 作为文档所有者的角色，管理文档的状态和事务。
 \end{itemize}
+\subsection{XCAF Package (属于 DataExchange Module)}
+\label{sec:org3673848}
 
-\item \texttt{TDocStd\_Application} class
-
-\textbf{功能}: 处理文档的创建、加载和保存，管理文档集合。
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{NewDocument()} 创建一个新的文档
-\item \texttt{SaveAs()}, \texttt{Open()} 保存和打开文档
-\item \texttt{GetFormats()} 获取支持的文档格式列表
-\item \texttt{Close()} 关闭文档
-\end{itemize}
-\end{itemize}
-
-
-\begin{itemize}
-\item \texttt{TDocStd\_Owner} class
-
-\textbf{功能}: 作为文档所有者的角色，管理文档的状态和事务。
-
-\textbf{主要接口}:
-\begin{itemize}
-\item \texttt{SetDocument} 设置或关联文档
-\item \texttt{BeforeUndo}, \texttt{AfterUndo} 撤销操作前后的处理函数。
-\end{itemize}
-\end{itemize}
-\section{XCAF Package (属于 DataExchange Module)}
-\label{sec:org52f4e14}
-
-\subsection{Overview}
-\label{sec:org9aa8365}
+\subsubsection{Overview}
+\label{sec:orgdd7b745}
 
 XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是那些涉及到复杂装配结构的数据。XCAF 提供了一些列工具和接口，用于管理和操作包括颜色、材料、元数据、层级关系等在内的复杂 CAD 模型数据。
-\subsection{XCAF 主要功能与职责}
-\label{sec:orga8f164d}
+\subsubsection{XCAF 主要功能与职责}
+\label{sec:orgb05ef05}
 
 \begin{itemize}
 \item 复杂装配结构管理
@@ -361,88 +250,26 @@ XCAF 允许为模型元素添加和管理高级属性，如材料属性、PMI(�
 
 XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
-\subsection{XCAF 的主要接口与功能}
-\label{sec:org0ee9822}
+\subsubsection{XCAF 的核心类}
+\label{sec:org17b79b9}
 
 \begin{itemize}
-\item \texttt{XCAFDoc\_ShapeTool} class
-
-\textbf{功能}: 用于管理装配结构和形状。
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{GetShape} 获取形状
-\item \texttt{AddShape} 添加新的形状
-\item \texttt{GetSubShapes}, \texttt{GetSubShapeExt} 获取子形状
-\item \texttt{GetAssembly} 获取装配体
+\item \texttt{XCAFDoc\_ShapeTool} class 用于管理装配结构和形状。
+\item \texttt{XCAFDoc\_ColorTool} class 管理颜色属性
+\item \texttt{XCAFDoc\_LayerTool} class 管理图层属性
+\item \texttt{XCAFDoc\_MaterialTool} class 管理材料属性
+\item \texttt{XCAFDoc\_DatumTool}, \texttt{XCAFDoc\_DimTolTool} classes 管理标注和公差。
+\item \texttt{XCAFDoc\_AreaStyleTool} class 管理区域样式
 \end{itemize}
+\subsection{TNaming package}
+\label{sec:org48b21a3}
 
-\item \texttt{XCAFDoc\_ColorTool} class
-
-\textbf{功能}: 管理颜色属性
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{SetColor} 为形状设置颜色
-\item \texttt{GetColor} 获取形状的颜色
-\item \texttt{RemoveColor} 移除形状的颜色
-\end{itemize}
-
-\item \texttt{XCAFDoc\_LayerTool} class
-
-\textbf{功能}: 管理图层属性
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{SetLayer} 为形状设置图层
-\item \texttt{GetLayers} 获取形状的图层
-\end{itemize}
-
-\item \texttt{XCAFDoc\_MaterialTool} class
-
-\textbf{功能}: 管理材料属性
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{SetMaterial} 为形状设置材料
-\item \texttt{GetMaterial} 获取形状的材料
-\end{itemize}
-
-\item \texttt{XCAFDoc\_DatumTool}, \texttt{XCAFDoc\_DimTolTool} classes
-
-\textbf{功能}: 管理标注和公差。
-
-\textbf{主要接口}:
-
-\begin{itemize}
-\item \texttt{AddDatum}, \texttt{AddDimTol} 添加新的标注或公差
-\item \texttt{GetDatum}, \texttt{GetDimTol} 获取标注或公差
-\end{itemize}
-
-\item \texttt{XCAFDoc\_AreaStyleTool} class
-
-\textbf{功能}: 管理区域样式
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{SetAreaStyle} 为形状设置区域样式
-\item \texttt{GetAreaStyle} 获取形状的区域样式
-\end{itemize}
-\end{itemize}
-\section{TNaming package}
-\label{sec:orgf09fa18}
-
-\subsection{Overview}
-\label{sec:orgc09aba3}
+\subsubsection{Overview}
+\label{sec:orge3ecbbb}
 
 \texttt{TNaming} 提供了命名服务，以便在复杂的 CAD 模型和数据结构中标识和追踪对象。这对于在模型变更过程中保持对特定对象的引用非常重要。
-\subsection{TNaming 的主要功能与职责}
-\label{sec:org20284c2}
+\subsubsection{TNaming 的主要功能与职责}
+\label{sec:org17aa62d}
 
 \begin{itemize}
 \item 对象标识和追踪
@@ -469,74 +296,25 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 
 支持与 OCAF 的撤销/重做机制结合使用，确保在运行这些操作时保持命名信息的一致性。
 \end{itemize}
-\subsection{TNaming 的主要接口与功能}
-\label{sec:org19740f3}
+\subsubsection{TNaming 的核心类}
+\label{sec:org567ec2f}
 
 \begin{itemize}
-\item \texttt{TNaming\_NamedShape} class
-
-\textbf{功能}: 用于关联形状(Shape)与名称，实现形状的命名和追踪。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Get} 获取与名称关联的形状
-\item \texttt{Set} 设置或更新名称与形状的关联
+\item \texttt{TNaming\_NamedShape} class 用于关联形状(Shape)与名称，实现形状的命名和追踪。
+\item \texttt{TNaming\_Builder} class 用于构建和修改命名关系
+\item \texttt{TNaming\_Tool} class 提供一系列静态方法来操作和查询命名信息
+\item \texttt{TNaming\_Naming} class 存储和管理命名操作的历史记录。
+\item \texttt{TNaming\_NamingTool} class 提供用于执行复杂命名操作的高级方法
 \end{itemize}
+\subsection{TPrsStd package}
+\label{sec:org7e71fe0}
 
-\item \texttt{TNaming\_Builder} class
-
-\textbf{功能}: 用于构建和修改命名关系
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Select} 为给定的形状选择或创建一个名称
-\item \texttt{Generate} 生成一个新的名称
-\end{itemize}
-
-\item \texttt{TNaming\_Tool} class
-
-\textbf{功能}: 提供一系列静态方法来操作和查询命名信息
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{GetShape} 根据名称获取形状
-\item \texttt{GetLabel} 获取与特定形状关联的标签
-\end{itemize}
-
-\item \texttt{TNaming\_Naming} class
-
-\textbf{功能}: 存储和管理命名操作的历史记录。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{GetName} 获取命名操作的名称
-\item \texttt{GetShapes} 获取命名操作影响的形状列表
-\end{itemize}
-
-\item \texttt{TNaming\_NamingTool} class
-
-\textbf{功能}: 提供用于执行复杂命名操作的高级方法
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Solve} 解决命名冲突
-\item \texttt{LoadNamedShapes} 加载命名形状
-\end{itemize}
-\end{itemize}
-\section{TPrsStd package}
-\label{sec:org1a73278}
-
-\subsection{Overview}
-\label{sec:org3cbf0ad}
+\subsubsection{Overview}
+\label{sec:orgc81b925}
 
 \texttt{TPrsStd} package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
-\subsection{TPrsStd 主要功能与职责}
-\label{sec:orgd159cc2}
+\subsubsection{TPrsStd 主要功能与职责}
+\label{sec:org74d9884}
 
 \begin{itemize}
 \item 图形表示管理
@@ -567,64 +345,24 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 
 可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
 \end{itemize}
-\subsection{TPrsStd 的主要接口与功能}
-\label{sec:orgb1a8e5c}
+\subsubsection{TPrsStd 的核心类}
+\label{sec:org004294d}
 
 \begin{itemize}
-\item \texttt{TPrsStd\_AISPresentation} class
-
-\textbf{功能}: 用于管理工程数据的图形表示，如形状在图形界面中的显示。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{SetDriver} 设置用于显示的驱动程序。
-\item \texttt{Update} 更新图形表示以反映数据的更改。
-\item \texttt{Display}, \texttt{Erase} 控制对象的显示和隐藏。
+\item \texttt{TPrsStd\_AISPresentation} class 用于管理工程数据的图形表示，如形状在图形界面中的显示。
+\item \texttt{TPrsStd\_AISViewer} class 提供一个视图环境，用于显示和管理多个图形表示。
+\item \texttt{TPrsStd\_Presentation} class 作为数据和其图形表示之间的桥梁。
+\item \texttt{TPrsStd\_Driver} class 为具体的数据类型提供图形表示的生成和更新逻辑。
 \end{itemize}
+\subsection{TDataStd package}
+\label{sec:org102c0bd}
 
-\item \texttt{TPrsStd\_AISViewer} class
-
-\textbf{功能}: 提供一个视图环境，用于显示和管理多个图形表示。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Update} 更新视图中的所有表示
-\item \texttt{SetView} 设置或更改关联的视图
-\end{itemize}
-
-\item \texttt{TPrsStd\_Presentation} class
-
-\textbf{功能}: 作为数据和其图形表示之间的桥梁。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Set} 关联数据和图形表示。
-\item \texttt{Get} 获取与数据关联的图形表示。
-\end{itemize}
-
-\item \texttt{TPrsStd\_Driver} class
-
-\textbf{功能}: 为具体的数据类型提供图形表示的生成和更新逻辑。
-
-\textbf{主要接口}
-
-\begin{itemize}
-\item \texttt{Update} 根据数据更新图形表示。
-\item \texttt{Create} 根据给定的数据创建新的图形表示。
-\end{itemize}
-\end{itemize}
-\section{TDataStd package}
-\label{sec:org5d64f4e}
-
-\subsection{Overview}
-\label{sec:org207e8c0}
+\subsubsection{Overview}
+\label{sec:org1e04802}
 
 \texttt{TDataStd} 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
-\subsection{TDataStd 主要功能与职责}
-\label{sec:orgb2a9e41}
+\subsubsection{TDataStd 主要功能与职责}
+\label{sec:org8ac4f67}
 
 \begin{itemize}
 \item 基本数据类型的管理
@@ -651,82 +389,28 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 
 \texttt{TDataStd} 的属性与 \texttt{TDF\_Label} 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
 \end{itemize}
-\subsection{TDataStd 的主要接口与功能}
-\label{sec:orgdcd5be6}
+\subsubsection{TDataStd 的核心类}
+\label{sec:org01187a6}
 
 \begin{itemize}
-\item \texttt{TDataStd\_Integer}
-\begin{itemize}
-\item 功能: 用于存储和管理整数值
-\item 主要接口: \texttt{Set}, \texttt{Get}
+\item \texttt{TDataStd\_Integer} 用于存储和管理整数值
+\item \texttt{TDataStd\_Real} 用于存储和管理实数值
+\item \texttt{TDataStd\_String} 用于存储和管理字符串
+\item \texttt{TDataStd\_UAttribute} 作为用户自定义数据的基类，可以派生出用于存储特定类型数据的类。
+\item \texttt{TDataStd\_Name} 用于存储和管理对象的名称
+\item \texttt{TDataStd\_Boolean} 用于存储和管理布尔值
+\item \texttt{TDataStd\_Enum} 用于存储和管理枚举值
 \end{itemize}
-\item \texttt{TDataStd\_Real}
-\begin{itemize}
-\item 功能: 用于存储和管理实数值
-\item 主要接口: \texttt{Set}, \texttt{Get}
-\end{itemize}
-\item \texttt{TDataStd\_String}
-\begin{itemize}
-\item 功能: 用于存储和管理字符串
-\item 主要接口: \texttt{Set}, \texttt{Get}
-\end{itemize}
-\item \texttt{TDataStd\_UAttribute}
-\begin{itemize}
-\item 功能: 作为用户自定义数据的基类，可以派生出用于存储特定类型数据的类。
-\item 主要接口: \texttt{SetID} 设置属性的唯一标识符
-\end{itemize}
-\item \texttt{TDataStd\_Name}
-\begin{itemize}
-\item 功能: 用于存储和管理对象的名称
-\item 主要接口: \texttt{Set}, \texttt{Get}
-\end{itemize}
-\item \texttt{TDataStd\_Boolean}
-\begin{itemize}
-\item 功能: 用于存储和管理布尔值
-\item 主要接口: \texttt{Set}, \texttt{Get}
-\end{itemize}
-\item \texttt{TDataStd\_Enum}
-\begin{itemize}
-\item 功能: 用于存储和管理枚举值
-\item 主要接口: \texttt{Set}, \texttt{Get}
-\end{itemize}
-\end{itemize}
-\section{BinTObj package}
-\label{sec:orgc0aa9ec}
+\subsection{BinTObj package}
+\label{sec:org556a641}
 
-\section{XmlTObj packages}
-\label{sec:org7bd6464}
-
-\section{关键 Class 的串联}
-\label{sec:org39b8f0c}
-
-\subsection{\texttt{TDocStd\_Application}, \texttt{CDF\_Application}, \texttt{CDM\_Application} 三个类的主要接口及关系}
-\label{sec:orgef86a37}
-
-\begin{itemize}
-\item \texttt{TDocStd\_Application} 提供了高级的文档管理功能
-\begin{itemize}
-\item \texttt{NewDocument(format: String, \&TDocStd\_Document)} 创建一个新文档
-\item \texttt{Open(path: String, \&TDocStd\_Document)} 打开磁盘上的文档
-\item \texttt{SaveAs(TDocStd\_Document, path: String)} 保存文档到磁盘
-\item \texttt{Close(TDocStd\_Document)} 关闭给定文档
-\item \texttt{DefineFormat(format: String, \&rwDriver)} 设置指定格式的读写驱动
-\end{itemize}
-\item \texttt{CDF\_Application} (Cascade Document Framework) 提供了通用的文档管理接口，是=TDocStd\textsubscript{Application}= 的基类。
-\begin{itemize}
-\item \texttt{Open(\&CDM\_Document)} 将文档加入到 current session directory
-\item \texttt{Close(\&CDM\_Document)} 将文档从 current session directory 移除并关闭。
-\end{itemize}
-\item \texttt{CDM\_Application} (Cascade Document Management) 是更底层的文档管理类，提供文档管理的基础功能。
-\begin{itemize}
-\item 没看到啥值得注意的接口
-\end{itemize}
-\end{itemize}
+\subsection{XmlTObj packages}
+\label{sec:orga316d6b}
 \section{开发环境搭建}
-\label{sec:orgdbd96d9}
+\label{sec:org3c655a8}
 
 \subsection{Ubuntu 环境下编译与配置 OCCT 开发环境}
-\label{sec:org8b89026}
+\label{sec:org508b756}
 
 \begin{enumerate}
 \item 安装依赖
@@ -776,11 +460,8 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
   export LD_LIBRARY_PATH=$CASROOT/lib:$LD_LIBRARY_PATH
 \end{minted}
 \end{enumerate}
-\subsection{Arch Linux 环境下编译与配置 OCCT 开发环境}
-\label{sec:org1dfa2b6}
-
 \subsection{编写简单的 OCCT 程序}
-\label{sec:org8f6bb19}
+\label{sec:org337d95b}
 
 OCCT 安装完成后，我们可以通过编译运行一个简单的 OCCT 示例程序来验证安装。
 
@@ -813,7 +494,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${OpenCASCADE_LIBRARIES})
 \item \texttt{target\_link\_libraries(\$\{CMAKE\_PROJECT\_NAME\} \$\{OpenCASCADE\_LIBRARIES\})} 链接 OCCT 库
 \end{itemize}
 
-源码文件 \texttt{main.cpp} 的内容如下
+下面的验证程序，创建一个简单的长方体，然后获取其 Topo Shape。源代码文件 \texttt{main.cpp} 如下
 
 \begin{minted}[]{cpp}
 #include <iostream>
@@ -841,10 +522,10 @@ cmake --build .
 程序执行成功的话，会打印 \texttt{Hello OCCT} 。
 下面穿插介绍一下涉及的 OCCT clases。
 \subsection{相关的 OCCT 类}
-\label{sec:orgd9a0094}
+\label{sec:org8ded147}
 
 \subsubsection{\texttt{BRepPrimAPI\_MakeBox} class}
-\label{sec:org12214df}
+\label{sec:orgb800c9e}
 
 \texttt{BRepPrimAPI\_MakeBox} 这个类是 OCCT 中 BRep 建模的一部分，用于创建三维的长方体(盒子)。长方体可以通过指定宽度、高度和深度来定义，也可以通过其他方式如两个对角点或中心点和尺寸来定义。它的一些关键接口有：
 
@@ -856,7 +537,7 @@ cmake --build .
 \item \texttt{Shape()} 方法可以获取生成的长方体形状 (\texttt{TopoDS\_Shape} 类型)。
 \end{itemize}
 \subsubsection{\texttt{TopoDS\_Shape} class}
-\label{sec:org4580fc5}
+\label{sec:org72133c7}
 
 \texttt{TopoDS\_Shape} 是 OCCT 的一个核心类，用于表示和操作几何形状。 \texttt{TopoDS\_Shape} 是所有几何形状的基类，包括点、线、面、实体等，它为各种几何实体提供了一种通用的访问和操作方式。它的一些重要的接口有:
 
@@ -873,11 +554,13 @@ cmake --build .
 \item \texttt{Reversed()}: 获取一个当前 Shape 反转方向后的副本
 \item \texttt{ShapeType()}: 获取 Shape 的类型，如 \texttt{TopAbs\_VERTEX}, \texttt{TopAbs\_EDGE}, \texttt{TopAbs\_FACE} 等。
 \end{itemize}
-\section{一个简单的 OCAF 程序}
-\label{sec:orgad26f40}
+\section{一个基本的 OCAF 程序}
+\label{sec:org4ebeee1}
 
 \subsection{程序源码}
-\label{sec:orgf1cf85d}
+\label{sec:orgb47e533}
+
+下面的程序代码，创建了一个 App，在 App 内新建一个 Doc 文档，然后在 Main Label 下插入一个 Integer Attribute，最后保存到磁盘文件，并关闭内存中的文件。
 
 \begin{minted}[]{cpp}
 #include <TDocStd_Application.hxx>
@@ -917,5 +600,50 @@ int main() {
 \includegraphics[width=.9\linewidth]{./img/binocaf-binary-content.png}
 \end{center}
 
-我们可以大致看到文档中包含了 creation-date file\textsubscript{format}, reference-counter, modification-counter, \texttt{TDataStd\_Integer} 等一些信息。
+我们可以大致看到文档中包含了 creation-date file-format, reference-counter, modification-counter, \texttt{TDataStd\_Integer} 等一些信息。
+\subsection{相关的 OCCT 类}
+\label{sec:orgeaf4d6e}
+
+\subsubsection{\texttt{TDocStd\_Application} class}
+\label{sec:org7d58ba6}
+
+类 \texttt{TDocStd\_Application} 用于创建、打开、保存、关闭和管理 OCAF 文档(\texttt{TDocStd\_Document})，支持多文档界面(MDI)，允许同时处理多个文档。它是开发基于 OCAF 的应用程序的关键组件。
+
+\begin{itemize}
+\item \texttt{NewDocument(format: String, TDocStd\_Document\&)} 创建一个新的文档
+\item \texttt{Open(path: String, TDocStd\_Document\&)} 打开磁盘上的一个文档
+\item \texttt{Save(TDocStd\_Document\&)} 保存文档
+\item \texttt{SaveAs(TDocStd\_Document\&, path: String)} 文档另存为
+\item \texttt{Close(TDocStd\_Document\&)} 关闭文档
+\end{itemize}
+\subsubsection{\texttt{TDocStd\_Document} class}
+\label{sec:org42bfee5}
+
+类 \texttt{TDocStd\_Document} 代表一个 OCAF 文档，用于存储和管理复杂的工程数据。它包含一个或多个层次化的数据结构（通过 \texttt{TDF\_Label} 组织）。OCAF 文档支持事务处理机制，提供了 Undo/Redo 接口；支持文档的保存和加载。
+
+\begin{itemize}
+\item \texttt{IsSaved()} 检查文档是否已保存
+\item \texttt{IsEmpty()} 检查文档是否为空，即 main label 是否包含 attributes
+\item \texttt{NewCommand()} 启动一个新的事务或命令
+\item \texttt{CommitCommand()} 提交当前事务，使其更改称为文档的一部分
+\item \texttt{Undo()}, \texttt{Redo()} 撤销或重做最近的事务
+\item \texttt{GetUndoLimit()}, \texttt{SetUndoLimit(int)} 获取和设置撤销操作的限制
+\item \texttt{IsChanged()} 检查文档子上次保存后是否被修改
+\item \texttt{SetModified(TDF\_Label\&)} 标记一个 label 为 modified，文档变为 UnValid 状态
+\item \texttt{Recompute()} 重新计算，传播 modification 的影响
+\item \texttt{IsValid()} 检查文档修改后，是否重新计算了
+\item \texttt{Main()} 获取文档的 main label
+\item \texttt{DumpJson(OStream\&)} 打印文档内容，用于调试
+\end{itemize}
+\subsubsection{\texttt{TDF\_Label} class}
+\label{sec:orga1bf3a1}
+
+类 \texttt{TDF\_Label}
+\subsubsection{\texttt{TDataStd\_Integer} class}
+\label{sec:org2607b49}
+
+\subsubsection{\texttt{BinDrivers} class}
+\label{sec:org5266457}
+
+OCAF 中如何实现参数化设计的
 \end{document}
