@@ -1,4 +1,4 @@
-#+title: OCAF GPT
+#+title: OCCT OCAF 学习笔记
 #+LaTex_COMPILER: xelatex
 #+LaTex_HEADER: \usepackage{xeCJK}
 #+LaTex_HEADER: \setCJKmainfont{SimSong}
