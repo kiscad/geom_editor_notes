@@ -1,4 +1,4 @@
-% Created 2024-01-18 Thu 11:21
+% Created 2024-01-18 Thu 11:34
 % Intended LaTeX compiler: xelatex
 \documentclass[11pt]{article}
 \usepackage{graphicx}
@@ -14,6 +14,8 @@
 \usepackage{xeCJK}
 \setCJKmainfont{SimSong}
 \setCJKmonofont{SimSong}
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
 \author{Chen Chen}
 \date{\today}
 \title{OCCT OCAF 学习笔记}
@@ -30,18 +32,18 @@
 \tableofcontents
 
 \section{Introduction}
-\label{sec:org366dafe}
+\label{sec:org298c8bc}
 
 \subsection{OCAF Module}
-\label{sec:org8aec5e5}
+\label{sec:orgc59fadd}
 
 \subsubsection{Overview}
-\label{sec:org59a00e7}
+\label{sec:org62d3e09}
 Open CASCADE Technology (OCCT) 是一个开源的软件开发平台，用于三维 CAD、CAM、CAE 系统的开发。它提供了广泛的功能，涵盖了几何建模、图形可视化、数据交换和更多方面。
 
 Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OCAF 是一个应用程序框架，用于简化复杂工程图形应用程序的开发。它提供了一种有效的方式来组织、存储、检索和操作复杂的工程数据。OCAF 特别适合于需要处理复杂的装配结构、历史记录、参数化设计等场景的应用程序。
 \subsubsection{OCAF 的主要功能}
-\label{sec:org8630a6a}
+\label{sec:orgee5b2a3}
 
 \begin{itemize}
 \item 数据管理
@@ -69,7 +71,7 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 
 通过 OCAF，开发者可以更专注于应用的核心功能，而不是底层的数据管理和操作。
 \subsubsection{OCAF 的主要 Packages}
-\label{sec:org0f5b4c4}
+\label{sec:orga124970}
 
 下面列出了一些在 OCAF 中常用且重要的 packages:
 
@@ -119,14 +121,14 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \end{itemize}
 \end{itemize}
 \subsection{TDF Package}
-\label{sec:org6d2a22f}
+\label{sec:orgec60fe2}
 
 \subsubsection{Overview}
-\label{sec:org168997c}
+\label{sec:orgcde6654}
 
 TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织复杂的工程数据（其中拓扑数据是几何建模的基础）。TDF 提供了一个结构化的方式来存储和操作与拓扑相关的信息，如点、线、面、实体等几何元素及其之间的关系。
 \subsubsection{TDF 的功能与职责}
-\label{sec:org66a7fa9}
+\label{sec:orga5179ab}
 
 \begin{itemize}
 \item 数据组织
@@ -154,7 +156,7 @@ TDF 支持数据的版本控制，这对于跟踪数据的历史变更非常有�
 TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制。
 \end{itemize}
 \subsubsection{TDF 的核心类}
-\label{sec:org62077cc}
+\label{sec:org19aa7e5}
 
 \begin{itemize}
 \item \texttt{TDF\_Label} class 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
@@ -164,13 +166,13 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item \texttt{TDF\_RelocationTable} class 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
 \end{itemize}
 \subsection{TDocStd Package}
-\label{sec:org5c3e2bf}
+\label{sec:org003da65}
 
 \subsubsection{Overview}
-\label{sec:orgef6f29d}
+\label{sec:org30c665f}
 \texttt{TDocStd} 主要用于处理和管理文档(Document)，这些文档用于存储和组织复杂的 CAD 数据结构。一个文档通常代表一个工程项目或一个 CAD 模型，它包含了所有相关的数据和信息。 \texttt{TDocStd} 提供了一套工具和接口来创建、管理和存储这些文档。
 \subsubsection{TDocStd 的功能与职责}
-\label{sec:org74e5c46}
+\label{sec:org444799c}
 
 \begin{itemize}
 \item 文档管理
@@ -198,7 +200,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \texttt{TDocStd} 的设计允许开发者根据需要扩展和定制文档的功能，以适应特定的应用需求。
 \end{itemize}
 \subsubsection{TDocStd 与 TDF package 的关系}
-\label{sec:orge7fc8ee}
+\label{sec:org3915a23}
 
 \begin{itemize}
 \item \texttt{TDocStd} 依赖于 \texttt{TDF} 来组织文档内的数据。
@@ -208,7 +210,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item 在 TDF 基础上，TDocStd 提供了文档级别的管理，如创建/保存/加载文档、事务处理(Undo/Redo)等。
 \end{itemize}
 \subsubsection{TDocStd 的核心类}
-\label{sec:orga147434}
+\label{sec:orgbf4d7d5}
 
 \begin{itemize}
 \item \texttt{TDocStd\_Document} class 代表一个文档，是管理和组织 CAD 数据的主要实体。
@@ -216,14 +218,14 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item \texttt{TDocStd\_Owner} class 作为文档所有者的角色，管理文档的状态和事务。
 \end{itemize}
 \subsection{XCAF Package (属于 DataExchange Module)}
-\label{sec:orged1a237}
+\label{sec:org94d6a4c}
 
 \subsubsection{Overview}
-\label{sec:orga91aec6}
+\label{sec:org56144a3}
 
 XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是那些涉及到复杂装配结构的数据。XCAF 提供了一些列工具和接口，用于管理和操作包括颜色、材料、元数据、层级关系等在内的复杂 CAD 模型数据。
 \subsubsection{XCAF 主要功能与职责}
-\label{sec:orgf94f6bd}
+\label{sec:orgbc0ada2}
 
 \begin{itemize}
 \item 复杂装配结构管理
@@ -251,7 +253,7 @@ XCAF 允许为模型元素添加和管理高级属性，如材料属性、PMI(�
 XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \subsubsection{XCAF 的核心类}
-\label{sec:org876e572}
+\label{sec:org6b0d519}
 
 \begin{itemize}
 \item \texttt{XCAFDoc\_ShapeTool} class 用于管理装配结构和形状。
@@ -262,14 +264,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{XCAFDoc\_AreaStyleTool} class 管理区域样式
 \end{itemize}
 \subsection{TNaming package}
-\label{sec:org07f9004}
+\label{sec:org3419c8b}
 
 \subsubsection{Overview}
-\label{sec:orgdf8eab8}
+\label{sec:org1b53478}
 
 \texttt{TNaming} 提供了命名服务，以便在复杂的 CAD 模型和数据结构中标识和追踪对象。这对于在模型变更过程中保持对特定对象的引用非常重要。
 \subsubsection{TNaming 的主要功能与职责}
-\label{sec:orgef033e8}
+\label{sec:orgd8971bd}
 
 \begin{itemize}
 \item 对象标识和追踪
@@ -297,7 +299,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 支持与 OCAF 的撤销/重做机制结合使用，确保在运行这些操作时保持命名信息的一致性。
 \end{itemize}
 \subsubsection{TNaming 的核心类}
-\label{sec:org48cde1c}
+\label{sec:org2d11256}
 
 \begin{itemize}
 \item \texttt{TNaming\_NamedShape} class 用于关联形状(Shape)与名称，实现形状的命名和追踪。
@@ -307,14 +309,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TNaming\_NamingTool} class 提供用于执行复杂命名操作的高级方法
 \end{itemize}
 \subsection{TPrsStd package}
-\label{sec:org43642f4}
+\label{sec:org93c06e5}
 
 \subsubsection{Overview}
-\label{sec:org54abfad}
+\label{sec:org18af333}
 
 \texttt{TPrsStd} package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
 \subsubsection{TPrsStd 主要功能与职责}
-\label{sec:orgf2e7827}
+\label{sec:orgdecf585}
 
 \begin{itemize}
 \item 图形表示管理
@@ -346,7 +348,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
 \end{itemize}
 \subsubsection{TPrsStd 的核心类}
-\label{sec:org1726fac}
+\label{sec:orgc3494ad}
 
 \begin{itemize}
 \item \texttt{TPrsStd\_AISPresentation} class 用于管理工程数据的图形表示，如形状在图形界面中的显示。
@@ -355,14 +357,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TPrsStd\_Driver} class 为具体的数据类型提供图形表示的生成和更新逻辑。
 \end{itemize}
 \subsection{TDataStd package}
-\label{sec:org9e32294}
+\label{sec:orgb3628d8}
 
 \subsubsection{Overview}
-\label{sec:org7f26e7c}
+\label{sec:orgf182336}
 
 \texttt{TDataStd} 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
 \subsubsection{TDataStd 主要功能与职责}
-\label{sec:org8fa02c6}
+\label{sec:orgd581450}
 
 \begin{itemize}
 \item 基本数据类型的管理
@@ -390,7 +392,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \texttt{TDataStd} 的属性与 \texttt{TDF\_Label} 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
 \end{itemize}
 \subsubsection{TDataStd 的核心类}
-\label{sec:orgea42767}
+\label{sec:orgc6088a9}
 
 \begin{itemize}
 \item \texttt{TDataStd\_Integer} 用于存储和管理整数值
@@ -402,15 +404,15 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TDataStd\_Enum} 用于存储和管理枚举值
 \end{itemize}
 \subsection{BinTObj package}
-\label{sec:org56d1336}
+\label{sec:org7b716e5}
 
 \subsection{XmlTObj packages}
-\label{sec:org4690814}
+\label{sec:org4caad02}
 \section{开发环境搭建}
-\label{sec:orgdf299b9}
+\label{sec:org96ffdec}
 
 \subsection{Ubuntu 环境下编译与配置 OCCT 开发环境}
-\label{sec:orgc895517}
+\label{sec:org39b26d3}
 
 \begin{enumerate}
 \item 安装依赖
@@ -461,7 +463,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{minted}
 \end{enumerate}
 \subsection{编写简单的 OCCT 程序}
-\label{sec:org2d6b8bc}
+\label{sec:org8f689df}
 
 OCCT 安装完成后，我们可以通过编译运行一个简单的 OCCT 示例程序来验证安装。
 
@@ -522,10 +524,10 @@ cmake --build .
 程序执行成功的话，会打印 \texttt{Hello OCCT} 。
 下面穿插介绍一下涉及的 OCCT clases。
 \subsection{相关的 OCCT 类}
-\label{sec:org2968b4d}
+\label{sec:org2c9d785}
 
 \subsubsection{\texttt{BRepPrimAPI\_MakeBox} class}
-\label{sec:org02db349}
+\label{sec:org9ee1a91}
 
 \texttt{BRepPrimAPI\_MakeBox} 这个类是 OCCT 中 BRep 建模的一部分，用于创建三维的长方体(盒子)。长方体可以通过指定宽度、高度和深度来定义，也可以通过其他方式如两个对角点或中心点和尺寸来定义。它的一些关键接口有：
 
@@ -537,7 +539,7 @@ cmake --build .
 \item \texttt{Shape()} 方法可以获取生成的长方体形状 (\texttt{TopoDS\_Shape} 类型)。
 \end{itemize}
 \subsubsection{\texttt{TopoDS\_Shape} class}
-\label{sec:orga8383e7}
+\label{sec:org1193cf7}
 
 \texttt{TopoDS\_Shape} 是 OCCT 的一个核心类，用于表示和操作几何形状。 \texttt{TopoDS\_Shape} 是所有几何形状的基类，包括点、线、面、实体等，它为各种几何实体提供了一种通用的访问和操作方式。它的一些重要的接口有:
 
@@ -555,10 +557,10 @@ cmake --build .
 \item \texttt{ShapeType()}: 获取 Shape 的类型，如 \texttt{TopAbs\_VERTEX}, \texttt{TopAbs\_EDGE}, \texttt{TopAbs\_FACE} 等。
 \end{itemize}
 \section{一个基本的 OCAF 程序}
-\label{sec:orgdc28b70}
+\label{sec:orgae29155}
 
 \subsection{程序源码}
-\label{sec:orgb4b5fd0}
+\label{sec:orgbdb9aa8}
 
 下面的程序代码，创建了一个 App，在 App 内新建一个 Doc 文档，然后在 Main Label 下插入一个 Integer Attribute，最后保存到磁盘文件，并关闭内存中的文件。
 
@@ -602,10 +604,10 @@ int main() {
 
 我们可以大致看到文档中包含了 creation-date file-format, reference-counter, modification-counter, \texttt{TDataStd\_Integer} 等一些信息。
 \subsection{相关的 OCCT 类}
-\label{sec:orgd436f13}
+\label{sec:org335a9f0}
 
 \subsubsection{\texttt{TDocStd\_Application} class}
-\label{sec:orgb3c7899}
+\label{sec:orga165cec}
 
 类 \texttt{TDocStd\_Application} 用于创建、打开、保存、关闭和管理 OCAF 文档(\texttt{TDocStd\_Document})，支持多文档界面(MDI)，允许同时处理多个文档。它是开发基于 OCAF 的应用程序的关键组件。
 
@@ -617,7 +619,7 @@ int main() {
 \item \texttt{Close(TDocStd\_Document\&)} 关闭文档
 \end{itemize}
 \subsubsection{\texttt{TDocStd\_Document} class}
-\label{sec:orgb7591e6}
+\label{sec:orgd48ac12}
 
 类 \texttt{TDocStd\_Document} 代表一个 OCAF 文档，用于存储和管理复杂的工程数据。它包含一个或多个层次化的数据结构（通过 \texttt{TDF\_Label} 组织）。OCAF 文档支持事务处理机制，提供了 Undo/Redo 接口；支持文档的保存和加载。
 
@@ -636,14 +638,18 @@ int main() {
 \item \texttt{DumpJson(OStream\&)} 打印文档内容，用于调试
 \end{itemize}
 \subsubsection{\texttt{TDF\_Label} class}
-\label{sec:org07f8c2a}
+\label{sec:orgbffcc0e}
 
 类 \texttt{TDF\_Label}
 \subsubsection{\texttt{TDataStd\_Integer} class}
-\label{sec:org815d845}
+\label{sec:org78aeeaf}
 
 \subsubsection{\texttt{BinDrivers} class}
-\label{sec:org8809085}
+\label{sec:org2b84a13}
+\section{OCAF 实现参数化设计}
+\label{sec:org6fd0970}
 
-OCAF 中如何实现参数化设计的
+下面的代码基于 OCAF 实现了一个参数化设计程序。
+\section{使用 IVtk Package 实现一个 VTK 模型查看器}
+\label{sec:orgfece859}
 \end{document}

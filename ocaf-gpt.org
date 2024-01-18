@@ -3,6 +3,8 @@
 #+LaTex_HEADER: \usepackage{xeCJK}
 #+LaTex_HEADER: \setCJKmainfont{SimSong}
 #+LaTex_HEADER: \setCJKmonofont{SimSong}
+#+LaTex_HEADER: \let\oldsection\section
+#+LaTex_HEADER: \renewcommand{\section}{\clearpage\oldsection}
 
 * Introduction
 
@@ -540,4 +542,8 @@ int main() {
 
 *** =BinDrivers= class
 
-OCAF 中如何实现参数化设计的
+* OCAF 实现参数化设计
+
+下面的代码基于 OCAF 实现了一个参数化设计程序。
+
+* 基于 IVtk Package 实现一个 VTK 模型查看器
