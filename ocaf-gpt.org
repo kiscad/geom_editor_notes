@@ -461,6 +461,17 @@ cmake --build .
 + =Reversed()=: 获取一个当前 Shape 反转方向后的副本
 + =ShapeType()=: 获取 Shape 的类型，如 =TopAbs_VERTEX=, =TopAbs_EDGE=, =TopAbs_FACE= 等。
 
+
+* 如何基于 OCAF 构建应用程序 (draft)
+
+在应用程序的一开始，我们首先需要定义一个 Application 类，如 =TDocStd_Application=, 然后创建用于存储 App 资源数据的文档 =TDocStd_Document=, 并指定文档的格式 (如 =BinOcaf=, 序列化的格式？)。
+
+然后你可以通过 =TDF_Label= 和 =TDF_Attribute= 来组织和存储应用程序的数据。一个工件 (part) 包含哪些属性是灵活的，比如你需要一个反射系数，就可以在 part Label 中插入一个 Real attribute 来表示反射系数。
+
+如果你需要一个复杂的数据结构来作为 part attribute，比如一个 FEM model, 那么你可以定义一个 attribute class 来承载。在自定义的 attribute class 中需要定义其持久化方式。
+
+然后可以开始实现一些 Command 操作，来创建或修改 Document 数据结构。最后就是集成到其他的 GUI 框架开发，如 QT, MFC。
+
 * 一个基本的 OCAF 程序
 
 ** 程序源码
@@ -532,18 +543,143 @@ int main() {
 + =Recompute()= 重新计算，传播 modification 的影响
 + =IsValid()= 检查文档修改后，是否重新计算了
 + =Main()= 获取文档的 main label
-+ =DumpJson(OStream&)= 打印文档内容，用于调试
++ =DumpJson(OStream&)= 打印文档内容，用于调试 (文档中存在，但代码里不能使用)
 
 *** =TDF_Label= class
 
-类 =TDF_Label=
+类 =TDF_Label= 代表文档 (=TDoc_Std_Document=) 中的一个数据节点，可以包含多个子节点 (=TDF_Label=) 和与之关联的属性 (=TDF_Attribute=)。属性包含了各种拓扑形状，颜色，元数据等。它是 OCAF 中一种很基本的数据类型，用于组织和存储层次化的数据结构。
+
++ =IsNull()= 检查标签是否为空。*注意*：只要标签不在 Document 中就为空，挺奇怪的。
++ =FindChild(Int tag, Bool create=True)= 查找或创建子 label
++ =NewChild()= 创建一个新的子 label，其 tag 自动生成
++ =HasChild()= 检查是否包含子 labels
++ =NbChildren()= 获取子 labels 的数量
++ =Father()= 获取当前 label 的父 label
++ =Tag()= 获取当前 label 的 Tag ID
++ =Root()= 获取文档的根标签。（这个接口感觉更应该放在 Document 中）
++ =Depth()= 获取 label 在文档层次结构中的深度
++ =HasAttribute()= 检查标签是否包含至少一个属性
++ =FindAttribute(GUID&, TDF_Attribute&)= 根据 ID 查找属性
++ =AddAttribute(TDF_Attribute&)= 添加一个新的属性
++ =Dump(&OStream)= 打印标签内容，用于调试 (文档中存在，但代码里不能使用)
 
 *** =TDataStd_Integer= class
 
+类 =TDataStd_Integer= 用于定义一个整数 attribute, 继承自 =TDF_Attribute=, 是 =Standard_Integer= 类型的封装。
+
++ =Set(TDF_Label&, Standard_Integer)= 静态函数，查找或创建一个整数属性，并设置其值为传入的参数。
++ =Get()=, =Set(Standard_Integer)= 获取和设置内在的整数值 (不知道怎么用)
+
 *** =BinDrivers= class
+
+这个类只包含了三个静态函数，感觉像是个工具类。
+
++ =DefineFormat(TDocStd_Application&)= 设置格式为 "BinOcaf"，并为 app 注册读写驱动。
+
+* 一个稍微复杂的 OCAF 程序
+
 
 * OCAF 实现参数化设计
 
 下面的代码基于 OCAF 实现了一个参数化设计程序。
 
 * 基于 IVtk Package 实现一个 VTK 模型查看器
+
+这个例子使用开源的 VTK 包作为 OCCT 的 3D 渲染前端。OCCT 提供了一个 =IVtk= package，它为 OCCT 的基础类型 =TopoDS= 和 VTK 的基础类型 =vtkPolyData= 提供了一个适配器。
+
+** 程序代码
+
+下面是项目的 =CMakeLists.txt= 文件内容：
+
+#+begin_src cmake
+cmake_minimum_required(VERSION 3.10)
+project(demo)
+
+find_package(OpenCASCADE REQUIRED)
+find_package(VTK REQUIRED)
+
+include_directories(
+  ${OpenCASCADE_INCLUDE_DIR}
+  ${VTK_INCLUDE_DIR}
+)
+
+set(SOURCES main.cpp)
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+
+target_link_libraries(${CMAKE_PROJECT_NAME}
+  ${OpenCASCADE_LIBRARIES}
+  ${VTK_LIBRARIES}
+)
+#+end_src
+
+下面是示例的源代码：
+
+#+begin_src cpp
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <IVtkTools_ShapeDataSource.hxx>
+
+#include <vtkAutoInit.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkPolyDataMapper.h>
+
+VTK_MODULE_INIT(vtkRenderingOpenGL2)
+VTK_MODULE_INIT(vtkInteractionStyle)
+
+int main() {
+  /// Build a simple OCCT model
+  BRepPrimAPI_MakeBox box(1., 2., 3.);
+  const auto& shape = box.Shape();
+
+  /// Setup VTK Render
+  vtkNew<vtkRenderWindow> renwin;
+
+  vtkNew<vtkRenderer> ren;
+  renwin->AddRenderer(ren);
+
+  vtkNew<vtkRenderWindowInteractor> iren;
+  vtkNew<vtkInteractorStyleTrackballCamera> istyle;
+  iren->SetRenderWindow(renwin);
+  iren->SetInteractorStyle(istyle);
+
+  /// Bridge OCCT and VTK with IVtk package
+  // TopoDS_Shape -> vtkPolyData -> <filters> -> mapper -> actor
+  vtkNew<IVtkTools_ShapeDataSource> occSource;
+  occSource->SetShape(new IVtkOCC_Shape(shape));
+
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(occSource->GetOutputPort());
+
+  vtkNew<vtkActor> actor;
+  actor->SetMapper(mapper);
+  ren->AddActor(actor);
+
+  // Start the render window app
+  renwin->Render();
+  iren->Start();
+
+  return 0;
+}
+#+end_src
+
+下面是程序运行后，模型的显示效果：
+
+[[./img/occt-vtk-viewer.png]]
+
+** 相关的类
+
+*** =IVtkTools_ShapeDataSource= class
+
+这个类用于将 OCCT 中的 BRep 拓扑结构数据 (如 =TopoDS_Shape=) 转换为 VTK 的数据结构 (如 =vtkPolyData=, =vtkUnstructuredGrid=)，从而能够在 VTK 环境中进行可视化和处理。
+
++ =SetShape(IVtkOCC_Shape::Handle &occShape)= 设置要转换的源 OCCT 形状对象
++ =GetShape()= 获取当前设置的源 OCCT 形状对象。
++ =GetOutputPort()= 方法来自于其所继承的 =vtkPolyDataAlgrithm= 类，用于获取与给定输出端口对应的代理对象。代理对象可以传递给其他算法的 =SetInputConnection=, =AddInputConnection= 等方法，以修改管道连接。
+
+*** =IVtkOCC_Shape= class
+
+这个类用于将 OCCT 中的形状类型 (=TopoDS_Shape=) 转换为 VTK 数据类型，以便在 VTK 中可以直接可视化和操作 OCCT 中的形状对象。
+
++ =GetShape() -> TopoDS_Shape&= 获取当前设置的 OCCT 形状。
