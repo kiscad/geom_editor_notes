@@ -464,13 +464,51 @@ cmake --build .
 
 * 如何基于 OCAF 构建应用程序 (draft)
 
-在应用程序的一开始，我们首先需要定义一个 Application 类，如 =TDocStd_Application=, 然后创建用于存储 App 资源数据的文档 =TDocStd_Document=, 并指定文档的格式 (如 =BinOcaf=, 序列化的格式？)。
+设计一个基于 OCAF 的应用，就是定义一个 Application class，它需要集成 =TDocStd_Application= 类。概念上，Application class 中定义了整体的 data model 和 App behavior（即 data model 支持的操作）。App 的 data model 是基于 =TDocStd_Document= 实现的。
 
-然后你可以通过 =TDF_Label= 和 =TDF_Attribute= 来组织和存储应用程序的数据。一个工件 (part) 包含哪些属性是灵活的，比如你需要一个反射系数，就可以在 part Label 中插入一个 Real attribute 来表示反射系数。
+实现一个基于 OCAF 的应用程序，步骤大致如下：
 
-如果你需要一个复杂的数据结构来作为 part attribute，比如一个 FEM model, 那么你可以定义一个 attribute class 来承载。在自定义的 attribute class 中需要定义其持久化方式。
+1. 定义一个继承自 =TDocStd_Application= 的 App 类。为其，创建一个 =Resource_Manager= 并指定其文档格式
+   + =TDocStd_Application= 是 abstract class，为啥能直接 =new= 呢
+   + 文档中的示例太老旧了。看了代码，目前还没明白 Resource 和 Format 的底层机制
+   + Resource 是配置文件吗？其中定义了每种格式的读写机制，以及插件？
+     * 这里的插件具体又是什么？
+   + 为了加载读写机制（共享库？）需要设置两个环境变量 =CSF_PluginDefaults= 和 =CSF_ResourcesDefault=, 两个变量分别指定 plugin file 和 resource file 的目录。
+2. 定义 App class 的 data model。通过组织 Document 的 Label 和 Attribute 的层次结构，来构建 data model。你可以创建自定义的 Attribute 类型。
+3. 实现一些 App Commands。通过这些 Commands 用户可以创建或修改 data model。Data model 中可以包含 persistent references 用于关联任何数据，如 Geom-Elements 或 Documents。其中 OCAF 提供了 Save/Open documents, Undo/Redo commands 等功能。
+4. 对 Document 和 View 进行关联
+5. 将整个 App 继承到其他的 GUI 框架中，如 QT, MFC 等。
 
-然后可以开始实现一些 Command 操作，来创建或修改 Document 数据结构。最后就是集成到其他的 GUI 框架开发，如 QT, MFC。
+** Resource File
+
+Resource file 定义了各种文档格式 formats (type + extension)，和各种数据类型的读写驱动 (drivers)。
+
+每种驱动都有一个唯一的 GUID 标识，比如下面五个常见驱动：
+
++ the schema driver (ad696002-5b34-11d1-b5ba-00a0c9064368)
++ the document storage driver (ad696000-5b34-11d1-b5ba-00a0c9064368)
++ the document retrieval driver (ad696001-5b34-11d1-b5ba-00a0c9064368)
++ the attribute storage driver (47b0b826-d931-11d1-b5da-00a0c9064368)
++ the attribute retrieval driver (47b0b827-d931-11d1-b5da-00a0c9064368)
+
+而这些 drivers 本身是 plugins，位于 =PappStdPlugin= lib (并不存在这个库 :(
+
+** Plugin File
+
+Plugin file 描述了所有的插件信息: 插件名称及其所在的 library。
+
+下面是文档中给出的 Plugin file 的样例(比较老旧, 里面的库都不存在了，所以文件样式也存疑吧)
+
+#+begin_src
+a148e300-5740-11d1-a904-080036aaa103.Location: FWOSPlugin
+! base document drivers plugin
+ad696000-5b34-11d1-b5ba-00a0c9064368.Location: PAppStdPlugin
+ad696001-5b34-11d1-b5ba-00a0c9064368.Location: PAppStdPlugin
+ad696002-5b34-11d1-b5ba-00a0c9064368.Location: PAppStdPlugin
+47b0b826-d931-11d1-b5da-00a0c9064368.Location: PAppStdPlugin
+47b0b827-d931-11d1-b5da-00a0c9064368.Location: PAppStdPlugin
+#+end_src
+
 
 * 一个基本的 OCAF 程序
 
@@ -482,8 +520,12 @@ cmake --build .
 #include <TDocStd_Application.hxx>
 #include <TDataStd_Integer.hxx>
 #include <BinDrivers.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <XCAFDoc_DocumentTool.hxx>
+#include <XCAFDoc_ShapeTool.hxx>
 
 int main() {
+  // create an TDocStd_Application and TDocStd_Document instances
   Handle(TDocStd_Application) app = new TDocStd_Application;
   BinDrivers::DefineFormat(app);
 
@@ -496,8 +538,19 @@ int main() {
   }
 
   TDF_Label mainLab = doc->Main();
+
+  // Insert an Integer attribute.
   TDataStd_Integer::Set(mainLab, 42);
 
+  // create a box shape
+  BRepPrimAPI_MakeBox box(1., 2., 3.);
+  const auto& shape = box.Shape();
+
+  // Insert the TopoDS_Shape as the attribute of main label
+  Handle(XCAFDoc_ShapeTool) shapetool = XCAFDoc_DocumentTool::ShapeTool(mainLab);
+  shapetool->SetShape(shapetool->NewShape(), shape);
+
+  // Save TDocStd_Document to a disk file.
   auto sstatus = app->SaveAs(doc, "./test.cbf");
   if (sstatus != PCDM_SS_OK) {
     app->Close(doc);
@@ -576,7 +629,9 @@ int main() {
 
 + =DefineFormat(TDocStd_Application&)= 设置格式为 "BinOcaf"，并为 app 注册读写驱动。
 
-* 一个稍微复杂的 OCAF 程序
+* 实现一个自定义的 Attribute class
+
+
 
 
 * OCAF 实现参数化设计
