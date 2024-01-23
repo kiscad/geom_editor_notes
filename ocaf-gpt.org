@@ -533,7 +533,8 @@ int main() {
   app->NewDocument("BinOcaf", doc);
 
   if (doc.IsNull()) {
-    std::cout << "Error: cannot create an OCAF document" << std::endl;
+    std::cout << "Error: cannot create an OCAF document"
+              << std::endl;
     return 1;
   }
 
@@ -646,7 +647,8 @@ TDF_Label label;
 TopoDS_Shape shape;
 
 // 获取 XCAFDoc_ShapeTool
-Handle(XCAFDoc_ShapeTool) shapetool = XCAFDoc_DocumentTool::ShapeTool(label);
+Handle(XCAFDoc_ShapeTool) shapetool =
+  XCAFDoc_DocumentTool::ShapeTool(label);
 // 插入 TopoDS_Shape
 TDF_Label label = shapetool->NewShape();
 shapetool->SetShape(label, shape);
@@ -681,16 +683,18 @@ shapetool->SetShape(label, shape);
 + =GetComponents()= 获取装配体中的所有组件
 
 
-* 实现一个自定义的 Part :ATTACH:
+* 实现自定义 Labels :ATTACH:
 :PROPERTIES:
 :ID:       0403220e-b530-4847-b0d0-ae2b31e8384f
 :END:
+
+** Overview
 
 OCAF 框架的 TDataStd package 为我们定义了很多基础的 =TDF_Attribute= 类型，通过组织这些 attribute types (如 Integer, Real, String), 我们可以在 TDocStd_Document 中创建所需的模型工件实例。但是这样的构建过程以及后续的访问和修改过程会变得非常琐碎啰嗦，因为我们需要逐级地访问深层的标签或属性。
 
 类似于 DataBase 中的 data scheme，我们可以为 OCAF Document 中的工件实例，创建一些工件类型属性，它们比基础属性更加抽象，更贴近业务需求；并在创建的工件类型中定义一些贴近业务的访问与修改接口。最后当我们需要在 Document 中添加一个新的工件实例时，只需要调用工件类型的构造函数即可。
 
-
+#+attr_latex: :width 10cm
 [[attachment:_20240123_135714custom-labels.png]]
 
 上图是一个 Document 样例，在 root label 下有两个 main labels, =Parts= 和 =Meshes=, 它们分别表示几何模型和网格模型。然后在几何模型 =Parts= 下，我们可以根据模型的构成分成一些模型组件 =Part=, 每个模型组件具有独立的 Name, Shape, Color 等属性，同时它还会具有一些 =Feature= labels，用来包含 Shape 的 Face indices, Edge indices, Vertex indices 等信息。
@@ -698,6 +702,10 @@ OCAF 框架的 TDataStd package 为我们定义了很多基础的 =TDF_Attribute
 在另一个 main label =Meshes= 下，包含了几何模型的网格数据。它的 sub-label 为 =Mesh= label。 =Mesh= 类型会包含网格数据 triangulation, 以及一些其他数据，如 reference，用于指向对应的几何 Part。这样当几何 Part 发生变化时，Mesh label 可以做相应的更新。
 
 从上面的介绍，这个 app 中可以抽象出 3 个业务数据类型: =Part=, =Feature=, =Mesh= 。这三个数据类型，在业务上也是比较抽象的，后续可能会衍生一些更具体的类型。所以这里将它们定义为抽象接口，即 =IPart=, =IFeature=, =IMesh= 。
+
+** =IPart= class
+
+*** =IPart= class 的定义
 
 下面是 =IPart= 的实现代码
 
@@ -715,20 +723,24 @@ public:
 
   TopoDS_Shape GetShape() const {
     Handle(TNaming_NamedShape) attr;
-    if (!m_root.FindAttribute(TNaming_NamedShape::GetID(), attr)) {
+    if (!m_root.FindAttribute(TNaming_NamedShape::GetID(), attr))
+    {
       return TopoDS_Shape();
     }
     return attr->Get();
   }
 
-  void SetColor(const unsigned r, const unsigned g, const unsigned b) {
+  void SetColor(const unsigned r,
+                const unsigned g,
+                const unsigned b) {
     int icolor = (r << 16) | (g << 8) | b;
     TDataStd_Integer::Set(m_root, icolor);
   }
 
   bool GetColor(unsigned& r, unsigned& g, unsigned& b) {
     Handle(TDataStd_Integer) attr;
-    if (!m_root.FindAttribute(TDataStd_Integer::GetID(), attr)) {
+    if (!m_root.FindAttribute(TDataStd_Integer::GetID(), attr))
+    {
       return false;
     }
     const int icolor = attr->Get();
@@ -746,12 +758,206 @@ private:
 + 上面的构造函数，传入一个 label 参数，表示对应的 Part label
 + 然后 =SetShape= 和 =GetShape= 方法用来设置和获取 Part 的 Shape 属性
   * Shape attribute 和其他比较基础的 attribute 类型不太一样，因为我们需要记录 Shape 的历史演化版本，用于 Undo/Redo 功能。所以不能像其他基础属性一样，通过 Set 的方式直接存储到 Label 中，而是需要放到一个 =TNaming_NamedShape= 中，然后在存储在对应的 Label 中。 =TNaming_NamedShape= 提供了新旧版本的功能。
+  * =TNaming_Builder= 的构造函数根据给定的 label 创建一个空的 =TNaming_NamedShape= 属性, 然后 =Generated= 方法将参数 =TopoDS_Shape= 实例存储到 NamedShape 属性中。
 + 同样地, =SetColor=  和 =GetColor= 方法用于设置和获取 Part 的 Color 属性
   * 这里 =Color= 使用一个 Integer 来存储。通过位操作运算来设置和获取 Color 的值
 
 注意: 上面的 =TNaming= 中的 =T= 是 Topological 的缩写；而在另一些情况下，如 =TDocStd= 中, =T= 则是 Transient 的缩写。这有时会让人困惑。
 
-* 实现一个自定义的 Attribute class
+*** 使用 =IFeature= 类
+
+下面是在 Application 的文档中创建 Part label 的示例代码:
+
+#+begin_src cpp
+TDF_Label parts_label = doc->Main();
+
+IPart part1(TDF_TagSource::NewChild(parts_label));
+IPart part2(TDF_TagSource::NewChild(parts_label));
+IPart part3(TDF_TagSource::NewChild(parts_label));
+
+BRepPrimAPI_MakeBox box(1, 2, 3);
+part2.SetShape(box.Shape());
+part2.SetColor(255, 0, 0);
+#+end_src
+
++ 上面的代码在 main label =parts_label= 下创建了三个 part labels: =part1=, =part2=, =part3=.
+  * 在创建 =IPart= 实例时，首先通过 =TDF_TagSource::NewChild= 函数在 =parts_label= 下创建 child labels, 并自动分配 Tag。
+  * 然后将新创建的 child label 传给 =IPart= 构造函数, 来创建 =IPart= 实例。
+  * 注意这里 =IPart= 不包含 =TDF_Label= 而是引用它。
++ 然后为 =part2= 设置了 Shape 和 Color 属性。
+
+** =IFeature= class
+
+*** =IFeature= class 的定义
+
+下面是 =IFeature= class 的实现:
+
+#+begin_src cpp
+class IFeature {
+  public:
+  IFeature(const TDF_Label& label): m_root(label) {
+  }
+
+  void SetFaces(const TColStd_PackedMapOfInteger& fids) {
+    Handle(TDataStd_IntPackedMap) attr =
+      TDataStd_IntPackedMap::Set(m_root);
+    attr->ChangeMap(fids);
+  }
+
+  private:
+  TDF_Label m_root;
+}
+#+end_src
+
++ 和 =IPart= 类似，构造函数传入的参数为 feature 对应的 label。
++ 方法 =SetFaces= 在 feature label 中添加一个 face-id 作为其属性
+
+*** =TDataStd_IntPackedMap= class
+
+=TDataStd_IntPackedMap= 类用于在 OCAF 文档中存储和管理一组整数值的集合（如 ID、索引或其他整数标识符）。它可以被附加到 =TDF_Label= 上，用于表示和管理与该标签相关联的一组整数。
+
++ =ChangeMap(const TColStd_PackedMapOfInteger&)= 改变内部存储的 integer map。
++ =IsEmpty()= 检查集合是否为空
++ =Extend()= 获取集合中元素的数量
++ =Add(const Standard_Integer)= 向集合中添加一个整数值
++ =Remove(const Standard_Integer)= 从集合中移除一个整数值
++ =Contains(const Standard_Integer)= 检查集合中是否包含指定的整数值
++ =Clear()= 清空集合中的所有元素
+
+*** 使用 =IFeature= 类
+
+#+begin_src cpp
+class IPart {
+  //...
+  IFeature CreateFeature(const TColStd_PackedMapOfInteger& fids) {
+    TDF_Label feat_root_lab = TDF_TagSource::NewChild(m_root);
+    IFeature feature(feat_root_lab);
+    feature.SetFaces(fids);
+    return feature;
+  }
+
+  void GetFeatures(std::vector<IFeature>& features) {
+    for (TDF_ChildIterator cit(m_root); cit.More(); cit.Next()) {
+      features.push_back(IFeature(cit.Value()));
+    }
+  }
+}
+
+TColStd_PackedMapOfInteger fids1, fids2;
+fids1.Add(1);
+fids1.Add(2);
+fids1.Add(3);
+fids2.Add(3);
+fids2.Add(4);
+fids2.Add(5);
+part3.CreateFeature(fids1);
+part3.CreateFeature(fids2);
+
+std::vector<IFeature> part3_features;
+part3.GetFeatures(part3_features);
+#+end_src
+
++ 在 =IPart= 类中，我们为其定义了创建和获取 feature 子标签的方法。
+  * =CreateFeature= 传入的参数为 Part 的 face-ids, 即所有的面标识符
+  * =GetFeatures= 中通过 =TDF_ChildIterator= 迭代器来遍历 part label 下的所有 feature labels。
++ main 函数中, 创建了两个整数集合，作为 face-ids，然后在 =part3= 下创建两个 feature 标签。
++ 最后通过 =GetFeatures= 方法获取所有的 features, 放在一个 vector 中。
+
+*** =TDF_ChildIterator= class
+
+=TDF_ChildIterator= 类通过提供一种简单而有效的方法来遍历 =TDF_Label= 的子标签，使得开发者方便地访问和操作 OCAF 文档中的层次化数据。
+
++ =TDF_ChildIterator(const TDF_Label&, const Standard_Boolean)= 构造函数，可以接受一个 label 和一个 bool 值。bool 参数用于指定是仅遍历第一层子标签，还是遍历所有层次的子标签（深度优先）。
++ =More()= 检查是否还有更多的子标签可以遍历
++ =Next()= 移动到下一个子标签
++ =Value()= 获取当前子标签
+
+** =IMesh= 类
+
+*** =IMesh= 类的定义
+
+#+begin_src cpp
+class IMesh {
+  public:
+  IMesh(const TDF_Label& label): m_root(label) {
+  }
+
+  void Create(const IPart& part) {
+    TopoDS_Shape part_shape = part.GetShape();
+    Handle(Poly_Triangulation) mesh;
+    for (TopExp_Explorer exp(part_shape, TopAbs_FACE);
+         exp.More();
+         exp.Next()) {
+      const TopoDS_Face& face = TopoDS::Face(exp.Current());
+      TopLoc_Location loc;
+      mesh = BRep_Tool::Triangulation(face, loc);
+      break;
+    }
+    if (mesh.IsNull()) {
+      return;
+    }
+    TDataXtd_Triangulation::Set(m_root, mesh);
+
+    TDF_Reference::Set(m_root, part.GetLabel());
+  }
+
+  private:
+  TDF_Label m_root;
+}
+#+end_src
+
++ Mesh 在文档中也是一个 label。其构造函数和 =IPart=, =IFeature= 类似。
++ =Creat= 方法中, 通过 =TopExp_Explorer= 遍历 part shape 的所有 Face 元素。
+  * =TopoDS::Face= 函数将当前拓扑元素从类型 =TopoDS_Shape= 转换为 =TopoDS_Face=
+
+*** =TopExp_Explorer= 类
+
+=TopExp_Explorer= 类提供了一种高效的方式来遍历和访问 =TopoDS_Shape= 中的拓扑元素，使得开发者可以方便地对 Shape 内部结构的深入了解和控制。
+
++ =TopExp_Explorer(const TopoDS_Shape&, const TopAbs_ShapeEnum to_find, const TopAbs_ShapeEnum to_avoid)= 在构造函数的参数中，可以指定要遍历的 Shape, 遍历的元素类型(如 =TopAbs_VERTEX=, =TopAbs_EDGE= 等)。其中 =to_find= 参数为要遍历的元素类型, =to_avoid= 参数为忽略的元素类型, 默认为 =TopAbs_SHAPE=
++ =Current()= 获取当前遍历到的元素
++ =Depth()= 返回当前遍历的深度
+
+*** =TopLoc_Location= 类
+
+=TopLoc_Location= 类用于定义几何形状在三维空间中的位置和方向，可以表示平移、旋转和缩放等变换，以及这些变换的组合。 =TopLoc_Location= 通常与 =TopoDS_Shape= 对象结合使用，以定义形状在空间中的放置。
+
++ =TopLoc_Location(const gp_Trsf&)= 基于给定的变换矩阵创建一个默认的位置
++ =IsIdentity()= 检查位置是否为恒等变换
++ =Transformation()= 获取与位置相关的变换矩阵(=gp_Trsf=)
++ =Inverted()= 获取位置的逆变换
++ =Multiplied(const TopLoc_Location&)= 将当前位置与另一个位置相乘，得到复合变换。
++ =FirstDatum()= 和 =FirstPower()= 在位置表示为一系列变换的序列时，获取第一个变换及其次数。
+
+*** =BRep_Tool= 类
+
+=BRep_Tool= 是一个工具类，提供对 =BRep= 形状 (如 =TopoDS_Vertex=, =TopoDS_Edge= 等) 的查询和访问。它是 OCCT 中用于处理几何形状的核心工具之一，尤其在 =BRep= 建模中。
+
++ =Triangulation(const TopoDS_Face&, TopLoc_Location&)= 该静态函数用于从 =TopoDS_Face= 对象中提取三角化的网格数据，该 face 需要已经被三角化。
+  * 三角化是将 CAD 模型中的曲面近似表示为三角形网格的过程。
+  * 它返回一个 =Poly_Triangulation= 对象。
+  * =Poly_Triangulation= 类用于表示三角化的网格数据，存储了曲面三角化的结果，包括顶点坐标、三角形索引，以及可选的法线和纹理坐标，通常用于可视化和几何分析。
+
+*** =TDataXtd_Triangulation=, =Poly_Triangulation= 类
+
+=TDataXtd_Triangulation= 类是 =TDF_Attribute= 的子类型，可以理解为对 =Poly_Triangulation= 的简单封装，主要接口和功能一致。
+
+=Poly_Triangulation= 类用于存储三角化后的网格数据，使得开发者可以对几何形状进行有效的可视化和处理。它封装了三角化曲面及其他的几何形状数据，包括顶点坐标和三角形的拓扑结构。
+
++ =NbNodes()= 获取三角网格的顶点数量
++ =NbTriangles()= 获取三角网格中三角形的数量
++ =InternalNodes()= 返回所有顶点的内部数组
++ =Triangles()= 返回包含所有三角形索引的数组。每个三角形由三个顶点索引组成。
++ =InternalUVNodes()= 返回包含 UV 纹理坐标的数组。
+
+*** =TDF_Reference= 类
+
+=TDF_Reference= 类提供了一种方式来在 OCAF 文档的一个 label 中存储对另一个 label 的引用，来增强 OCAF 的数据组织和管理能力。它用于表示复杂的数据关系，如链接到共享数据、创建装配结构的引用等。
+
++ =Set(const TDF_Label& source, const TDF_Label& target)= 在 source 标签上创建一个对 target 标签的引用。
++ =Get()= 获取当前引用所指向的标签。
+
+* 实现自定义的 Attribute
 
 
 

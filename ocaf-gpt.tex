@@ -1,4 +1,4 @@
-% Created 2024-01-23 Tue 14:19
+% Created 2024-01-23 Tue 18:46
 % Intended LaTeX compiler: xelatex
 \documentclass[11pt]{article}
 \usepackage{graphicx}
@@ -32,18 +32,18 @@
 \tableofcontents
 
 \section{Introduction}
-\label{sec:orgca46459}
+\label{sec:org7dc382d}
 
 \subsection{OCAF Module}
-\label{sec:orgd05ebb9}
+\label{sec:orgd25b56a}
 
 \subsubsection{Overview}
-\label{sec:orgb30b59a}
+\label{sec:org8c12a91}
 Open CASCADE Technology (OCCT) 是一个开源的软件开发平台，用于三维 CAD、CAM、CAE 系统的开发。它提供了广泛的功能，涵盖了几何建模、图形可视化、数据交换和更多方面。
 
 Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OCAF 是一个应用程序框架，用于简化复杂工程图形应用程序的开发。它提供了一种有效的方式来组织、存储、检索和操作复杂的工程数据。OCAF 特别适合于需要处理复杂的装配结构、历史记录、参数化设计等场景的应用程序。
 \subsubsection{OCAF 的主要功能}
-\label{sec:orgd18b69d}
+\label{sec:orgd59d13b}
 
 \begin{itemize}
 \item 数据管理
@@ -71,7 +71,7 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 
 通过 OCAF，开发者可以更专注于应用的核心功能，而不是底层的数据管理和操作。
 \subsubsection{OCAF 的主要 Packages}
-\label{sec:orga33f9c6}
+\label{sec:orge5ddfef}
 
 下面列出了一些在 OCAF 中常用且重要的 packages:
 
@@ -121,14 +121,14 @@ Open CASCADE Application Framework (OCAF) 是 OCCT 中的一个重要模块。OC
 \end{itemize}
 \end{itemize}
 \subsection{TDF Package}
-\label{sec:orge2acb17}
+\label{sec:org34d64c7}
 
 \subsubsection{Overview}
-\label{sec:org5b9892b}
+\label{sec:org94750d2}
 
 TDF (Topology Data Framework) 是 OCAF 的核心组件，用于管理和组织复杂的工程数据（其中拓扑数据是几何建模的基础）。TDF 提供了一个结构化的方式来存储和操作与拓扑相关的信息，如点、线、面、实体等几何元素及其之间的关系。
 \subsubsection{TDF 的功能与职责}
-\label{sec:orge5ffd02}
+\label{sec:orgaf3d645}
 
 \begin{itemize}
 \item 数据组织
@@ -156,7 +156,7 @@ TDF 支持数据的版本控制，这对于跟踪数据的历史变更非常有�
 TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制。
 \end{itemize}
 \subsubsection{TDF 的核心类}
-\label{sec:orgcfbcfdb}
+\label{sec:org397d009}
 
 \begin{itemize}
 \item \texttt{TDF\_Label} class 代表数据结构中的一个节点，可包含多个 sub-Labels 和 Attribute。
@@ -166,13 +166,13 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item \texttt{TDF\_RelocationTable} class 在数据复制和粘贴操作中使用，管理 Label 和 Attribute 之间的关系映射。
 \end{itemize}
 \subsection{TDocStd Package}
-\label{sec:orgf899658}
+\label{sec:orgb77877a}
 
 \subsubsection{Overview}
-\label{sec:orgfa7b3d2}
+\label{sec:org5884f4d}
 \texttt{TDocStd} 主要用于处理和管理文档(Document)，这些文档用于存储和组织复杂的 CAD 数据结构。一个文档通常代表一个工程项目或一个 CAD 模型，它包含了所有相关的数据和信息。 \texttt{TDocStd} 提供了一套工具和接口来创建、管理和存储这些文档。
 \subsubsection{TDocStd 的功能与职责}
-\label{sec:orgf4eb365}
+\label{sec:orgde27626}
 
 \begin{itemize}
 \item 文档管理
@@ -200,7 +200,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \texttt{TDocStd} 的设计允许开发者根据需要扩展和定制文档的功能，以适应特定的应用需求。
 \end{itemize}
 \subsubsection{TDocStd 与 TDF package 的关系}
-\label{sec:orgc187e62}
+\label{sec:org8c927a5}
 
 \begin{itemize}
 \item \texttt{TDocStd} 依赖于 \texttt{TDF} 来组织文档内的数据。
@@ -210,7 +210,7 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item 在 TDF 基础上，TDocStd 提供了文档级别的管理，如创建/保存/加载文档、事务处理(Undo/Redo)等。
 \end{itemize}
 \subsubsection{TDocStd 的核心类}
-\label{sec:org9bb026e}
+\label{sec:org8a9ff22}
 
 \begin{itemize}
 \item \texttt{TDocStd\_Document} class 代表一个文档，是管理和组织 CAD 数据的主要实体。
@@ -218,14 +218,14 @@ TDF 设计灵活，易于扩展，可以根据特定的应用需求进行定制�
 \item \texttt{TDocStd\_Owner} class 作为文档所有者的角色，管理文档的状态和事务。
 \end{itemize}
 \subsection{XCAF Package (属于 DataExchange Module)}
-\label{sec:orga9b7497}
+\label{sec:org898b89d}
 
 \subsubsection{Overview}
-\label{sec:orgde5b9ff}
+\label{sec:orgb267855}
 
 XCAF (eXtended CA Framework) 用于处理更高级别的 CAD 数据，尤其是那些涉及到复杂装配结构的数据。XCAF 提供了一些列工具和接口，用于管理和操作包括颜色、材料、元数据、层级关系等在内的复杂 CAD 模型数据。
 \subsubsection{XCAF 主要功能与职责}
-\label{sec:org76612b2}
+\label{sec:org8bd3ef6}
 
 \begin{itemize}
 \item 复杂装配结构管理
@@ -253,7 +253,7 @@ XCAF 允许为模型元素添加和管理高级属性，如材料属性、PMI(�
 XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{itemize}
 \subsubsection{XCAF 的核心类}
-\label{sec:orgd9bb288}
+\label{sec:orgb12b81a}
 
 \begin{itemize}
 \item \texttt{XCAFDoc\_ShapeTool} class 用于管理装配结构和形状。
@@ -264,14 +264,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{XCAFDoc\_AreaStyleTool} class 管理区域样式
 \end{itemize}
 \subsection{TNaming package}
-\label{sec:orgc016c2d}
+\label{sec:orgf49d285}
 
 \subsubsection{Overview}
-\label{sec:org4ff4948}
+\label{sec:org311606a}
 
 \texttt{TNaming} 提供了命名服务，以便在复杂的 CAD 模型和数据结构中标识和追踪对象。这对于在模型变更过程中保持对特定对象的引用非常重要。
 \subsubsection{TNaming 的主要功能与职责}
-\label{sec:orgb6b8ba7}
+\label{sec:org26a24c4}
 
 \begin{itemize}
 \item 对象标识和追踪
@@ -299,7 +299,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 支持与 OCAF 的撤销/重做机制结合使用，确保在运行这些操作时保持命名信息的一致性。
 \end{itemize}
 \subsubsection{TNaming 的核心类}
-\label{sec:org3586b58}
+\label{sec:org89ff633}
 
 \begin{itemize}
 \item \texttt{TNaming\_NamedShape} class 用于关联形状(Shape)与名称，实现形状的命名和追踪。
@@ -309,14 +309,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TNaming\_NamingTool} class 提供用于执行复杂命名操作的高级方法
 \end{itemize}
 \subsection{TPrsStd package}
-\label{sec:org34acd69}
+\label{sec:orgf04b850}
 
 \subsubsection{Overview}
-\label{sec:orgdcc8eb9}
+\label{sec:orgfefd789}
 
 \texttt{TPrsStd} package 用于将工程数据（如存储在 OCAF 文档中的数据）与其图形表示相关联。它为开发者提供了一系列工具和接口，以便在图形界面中展示和交互复杂的工程模型。
 \subsubsection{TPrsStd 主要功能与职责}
-\label{sec:orgc6486c6}
+\label{sec:orge8ca565}
 
 \begin{itemize}
 \item 图形表示管理
@@ -348,7 +348,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 可以与 OCCT 提供的不同渲染引擎（如OpenGL）协同工作，提供高质量的图形输出。
 \end{itemize}
 \subsubsection{TPrsStd 的核心类}
-\label{sec:orgb0a827b}
+\label{sec:orgf07857e}
 
 \begin{itemize}
 \item \texttt{TPrsStd\_AISPresentation} class 用于管理工程数据的图形表示，如形状在图形界面中的显示。
@@ -357,14 +357,14 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TPrsStd\_Driver} class 为具体的数据类型提供图形表示的生成和更新逻辑。
 \end{itemize}
 \subsection{TDataStd package}
-\label{sec:orgd70f517}
+\label{sec:orgda5f479}
 
 \subsubsection{Overview}
-\label{sec:org4d53f7e}
+\label{sec:org88ae92c}
 
 \texttt{TDataStd} 主要提供了一系列标准的数据属性(Attributes)，这些属性可以附加到 OCAF 文档中的 Labels 上，用于存储和管理各种类型的数据。
 \subsubsection{TDataStd 主要功能与职责}
-\label{sec:org54aaba9}
+\label{sec:org8ea6f25}
 
 \begin{itemize}
 \item 基本数据类型的管理
@@ -392,7 +392,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \texttt{TDataStd} 的属性与 \texttt{TDF\_Label} 紧密集成，使得数据可以方便地附加到标签上，并在 OCAF 文档的层次化结构中进行管理。
 \end{itemize}
 \subsubsection{TDataStd 的核心类}
-\label{sec:org8b98203}
+\label{sec:org8cdf33f}
 
 \begin{itemize}
 \item \texttt{TDataStd\_Integer} 用于存储和管理整数值
@@ -404,15 +404,15 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \item \texttt{TDataStd\_Enum} 用于存储和管理枚举值
 \end{itemize}
 \subsection{BinTObj package}
-\label{sec:orga2b6d03}
+\label{sec:orgf56654d}
 
 \subsection{XmlTObj packages}
-\label{sec:orgf7675f1}
+\label{sec:org218d636}
 \section{开发环境搭建}
-\label{sec:orgea421f7}
+\label{sec:org66b83c4}
 
 \subsection{Ubuntu 环境下编译与配置 OCCT 开发环境}
-\label{sec:org854a59d}
+\label{sec:org67b2e43}
 
 \begin{enumerate}
 \item 安装依赖
@@ -463,7 +463,7 @@ XCAF 设计灵活，可以根据特定应用需求进行扩展和定制。
 \end{minted}
 \end{enumerate}
 \subsection{编写简单的 OCCT 程序}
-\label{sec:orga708de9}
+\label{sec:org8c5b015}
 
 OCCT 安装完成后，我们可以通过编译运行一个简单的 OCCT 示例程序来验证安装。
 
@@ -524,10 +524,10 @@ cmake --build .
 程序执行成功的话，会打印 \texttt{Hello OCCT} 。
 下面穿插介绍一下涉及的 OCCT clases。
 \subsection{相关的 OCCT 类}
-\label{sec:orge32139d}
+\label{sec:org3659e94}
 
 \subsubsection{\texttt{BRepPrimAPI\_MakeBox} class}
-\label{sec:org31fefa7}
+\label{sec:orge9756c2}
 
 \texttt{BRepPrimAPI\_MakeBox} 这个类是 OCCT 中 BRep 建模的一部分，用于创建三维的长方体(盒子)。长方体可以通过指定宽度、高度和深度来定义，也可以通过其他方式如两个对角点或中心点和尺寸来定义。它的一些关键接口有：
 
@@ -539,7 +539,7 @@ cmake --build .
 \item \texttt{Shape()} 方法可以获取生成的长方体形状 (\texttt{TopoDS\_Shape} 类型)。
 \end{itemize}
 \subsubsection{\texttt{TopoDS\_Shape} class}
-\label{sec:orgae0337d}
+\label{sec:orga65e88b}
 
 \texttt{TopoDS\_Shape} 是 OCCT 的一个核心类，用于表示和操作几何形状。 \texttt{TopoDS\_Shape} 是所有几何形状的基类，包括点、线、面、实体等，它为各种几何实体提供了一种通用的访问和操作方式。它的一些重要的接口有:
 
@@ -557,7 +557,7 @@ cmake --build .
 \item \texttt{ShapeType()}: 获取 Shape 的类型，如 \texttt{TopAbs\_VERTEX}, \texttt{TopAbs\_EDGE}, \texttt{TopAbs\_FACE} 等。
 \end{itemize}
 \section{如何基于 OCAF 构建应用程序 (draft)}
-\label{sec:org3cdb61b}
+\label{sec:org411ef92}
 
 设计一个基于 OCAF 的应用，就是定义一个 Application class，它需要集成 \texttt{TDocStd\_Application} 类。概念上，Application class 中定义了整体的 data model 和 App behavior（即 data model 支持的操作）。App 的 data model 是基于 \texttt{TDocStd\_Document} 实现的。
 
@@ -580,7 +580,7 @@ cmake --build .
 \item 将整个 App 继承到其他的 GUI 框架中，如 QT, MFC 等。
 \end{enumerate}
 \subsection{Resource File}
-\label{sec:org2d3eb22}
+\label{sec:org223e2df}
 
 Resource file 定义了各种文档格式 formats (type + extension)，和各种数据类型的读写驱动 (drivers)。
 
@@ -596,7 +596,7 @@ Resource file 定义了各种文档格式 formats (type + extension)，和各种
 
 而这些 drivers 本身是 plugins，位于 \texttt{PappStdPlugin} lib (并不存在这个库 :(
 \subsection{Plugin File}
-\label{sec:org33caeae}
+\label{sec:org0757a8b}
 
 Plugin file 描述了所有的插件信息: 插件名称及其所在的 library。
 
@@ -612,10 +612,10 @@ ad696002-5b34-11d1-b5ba-00a0c9064368.Location: PAppStdPlugin
 47b0b827-d931-11d1-b5da-00a0c9064368.Location: PAppStdPlugin
 \end{verbatim}
 \section{一个基本的 OCAF 程序}
-\label{sec:org8418c94}
+\label{sec:org685b3b9}
 
 \subsection{程序源码}
-\label{sec:org1ddc531}
+\label{sec:org890d179}
 
 下面的程序代码，创建了一个 App，在 App 内新建一个 Doc 文档，然后在 Main Label 下插入一个 Integer Attribute，最后保存到磁盘文件，并关闭内存中的文件。
 
@@ -636,7 +636,8 @@ int main() {
   app->NewDocument("BinOcaf", doc);
 
   if (doc.IsNull()) {
-    std::cout << "Error: cannot create an OCAF document" << std::endl;
+    std::cout << "Error: cannot create an OCAF document"
+              << std::endl;
     return 1;
   }
 
@@ -668,10 +669,10 @@ int main() {
 
 在 \texttt{TDF\_Label} 中插入一个 \texttt{TopoDS\_Shape} 属性，可以使用 \texttt{XCAFDoc\_ShapeTool} 类或 \texttt{TNaming\_Builder} 类。 \texttt{XCAF} 模块提供了更高级的形状管理功能，而 \texttt{TNaming} 模块提供了更通用的命名和标识机制。
 \subsection{相关的 OCCT 类}
-\label{sec:orga199c4d}
+\label{sec:orge9d0cc8}
 
 \subsubsection{\texttt{TDocStd\_Application} class}
-\label{sec:org622dfb2}
+\label{sec:orgbe10c42}
 
 类 \texttt{TDocStd\_Application} 用于创建、打开、保存、关闭和管理 OCAF 文档(\texttt{TDocStd\_Document})，支持多文档界面(MDI)，允许同时处理多个文档。它是开发基于 OCAF 的应用程序的关键组件。
 
@@ -683,7 +684,7 @@ int main() {
 \item \texttt{Close(TDocStd\_Document\&)} 关闭文档
 \end{itemize}
 \subsubsection{\texttt{TDocStd\_Document} class}
-\label{sec:org7492907}
+\label{sec:org438a640}
 
 类 \texttt{TDocStd\_Document} 代表一个 OCAF 文档，用于存储和管理复杂的工程数据。它包含一个或多个层次化的数据结构（通过 \texttt{TDF\_Label} 组织）。OCAF 文档支持事务处理机制，提供了 Undo/Redo 接口；支持文档的保存和加载。
 
@@ -702,7 +703,7 @@ int main() {
 \item \texttt{DumpJson(OStream\&)} 打印文档内容，用于调试 (文档中存在，但代码里不能使用)
 \end{itemize}
 \subsubsection{\texttt{TDF\_Label} class}
-\label{sec:orga3bc639}
+\label{sec:org10267a2}
 
 类 \texttt{TDF\_Label} 代表文档 (\texttt{TDoc\_Std\_Document}) 中的一个数据节点，可以包含多个子节点 (\texttt{TDF\_Label}) 和与之关联的属性 (\texttt{TDF\_Attribute})。属性包含了各种拓扑形状，颜色，元数据等。它是 OCAF 中一种很基本的数据类型，用于组织和存储层次化的数据结构。
 
@@ -722,7 +723,7 @@ int main() {
 \item \texttt{Dump(\&OStream)} 打印标签内容，用于调试 (文档中存在，但代码里不能使用)
 \end{itemize}
 \subsubsection{\texttt{TDataStd\_Integer} class}
-\label{sec:org5a58705}
+\label{sec:orga4fd1a6}
 
 类 \texttt{TDataStd\_Integer} 用于定义一个整数 attribute, 继承自 \texttt{TDF\_Attribute}, 是 \texttt{Standard\_Integer} 类型的封装。
 
@@ -731,7 +732,7 @@ int main() {
 \item \texttt{Get()}, \texttt{Set(Standard\_Integer)} 获取和设置内在的整数值 (不知道怎么用)
 \end{itemize}
 \subsubsection{\texttt{BinDrivers} class}
-\label{sec:org58b778b}
+\label{sec:org751a0ff}
 
 这个类只包含了三个静态函数，感觉像是个工具类。
 
@@ -739,7 +740,7 @@ int main() {
 \item \texttt{DefineFormat(TDocStd\_Application\&)} 设置格式为 ``BinOcaf''，并为 app 注册读写驱动。
 \end{itemize}
 \subsection{几何形状的添加方式}
-\label{sec:orgce993a8}
+\label{sec:org477ea08}
 
 前面的例子中，我们通过 \texttt{TDataStd\_Integer::Set(label, 123)} 语句往 \texttt{label} 中添加了一个整数属性。在各种属性中，最重要的是 \texttt{TopoDS\_Shape} 属性，但是 \texttt{TopoDS\_Shape} 类无法通过类似 \texttt{Set} 的静态函数进行添加。往 \texttt{TDF\_Label} 中添加 \texttt{TopoDS\_Shape} 属性的方式主要有两种: \texttt{TNaming\_Builder} 类和 \texttt{XCAFDoc\_ShapeTool} 类。 \texttt{TNaming} 模块提供了更通用的命名和标识机制; \texttt{XCAF} 模块提供了更高级的形状管理功能。
 
@@ -762,13 +763,14 @@ TDF_Label label;
 TopoDS_Shape shape;
 
 // 获取 XCAFDoc_ShapeTool
-Handle(XCAFDoc_ShapeTool) shapetool = XCAFDoc_DocumentTool::ShapeTool(label);
+Handle(XCAFDoc_ShapeTool) shapetool =
+  XCAFDoc_DocumentTool::ShapeTool(label);
 // 插入 TopoDS_Shape
 TDF_Label label = shapetool->NewShape();
 shapetool->SetShape(label, shape);
 \end{minted}
 \subsubsection{\texttt{TNaming\_Builder} class}
-\label{sec:org22f9bae}
+\label{sec:org81ee308}
 
 \texttt{TNaming\_Builder} 类是在 OCAF 文档中创建和维护拓扑形状属性的工具类。其构造函数根据给定的标签创建一个空的 \texttt{TNaming\_NamedShape} 属性。它允许在该 NamedShape 中添加具有指定 evolution type 的 ``旧形状'' 和 ``新形状'' 对。
 
@@ -779,7 +781,7 @@ shapetool->SetShape(label, shape);
 \item \texttt{Delete(const TopoDS\_Shape\& S)} 将形状 \texttt{S} 从 label 中删除
 \end{itemize}
 \subsubsection{\texttt{XCAFDoc\_DocumentTool} class}
-\label{sec:orga5634d7}
+\label{sec:org9b5d819}
 
 \texttt{XCAFDoc\_DocumentTool} 提供了一套工具和接口，用于在 OCAF 文档中处理和管理扩展的 CAD 数据，包括装配结构、颜色、层、材料等。
 
@@ -789,7 +791,7 @@ shapetool->SetShape(label, shape);
 \item 类似地还有 \texttt{ColorTool()}, \texttt{MaterialTool()}, \texttt{ViewTool()}, \texttt{LayerTool()} 等方法。
 \end{itemize}
 \subsubsection{\texttt{XCAFDoc\_ShapeTool} class}
-\label{sec:orgda0e9d2}
+\label{sec:org7886da5}
 
 \texttt{XCAFDoc\_ShapeTool} 类提供了一套工具，用于管理 XCAF 文档中的几何形状和装配结构。它支持装配结构的创建、管理和遍历，包括装配体、子装配体和零件。
 
@@ -801,15 +803,17 @@ shapetool->SetShape(label, shape);
 \item \texttt{AddComponent()} 将形状作为组件添加到装配体中，如有必要，为组件创建一个额外的顶层形状，并返回组件的标签
 \item \texttt{GetComponents()} 获取装配体中的所有组件
 \end{itemize}
-\section{实现一个自定义的 Part\hfill{}\textsc{ATTACH}}
-\label{sec:orgda04962}
+\section{实现自定义 Labels\hfill{}\textsc{ATTACH}}
+\label{sec:orga55a03b}
+\subsection{Overview}
+\label{sec:orgfd66e33}
+
 OCAF 框架的 TDataStd package 为我们定义了很多基础的 \texttt{TDF\_Attribute} 类型，通过组织这些 attribute types (如 Integer, Real, String), 我们可以在 TDocStd\textsubscript{Document} 中创建所需的模型工件实例。但是这样的构建过程以及后续的访问和修改过程会变得非常琐碎啰嗦，因为我们需要逐级地访问深层的标签或属性。
 
 类似于 DataBase 中的 data scheme，我们可以为 OCAF Document 中的工件实例，创建一些工件类型属性，它们比基础属性更加抽象，更贴近业务需求；并在创建的工件类型中定义一些贴近业务的访问与修改接口。最后当我们需要在 Document 中添加一个新的工件实例时，只需要调用工件类型的构造函数即可。
 
-
 \begin{center}
-\includegraphics[width=.9\linewidth]{/Users/chenchen/org/.attach/04/03220e-b530-4847-b0d0-ae2b31e8384f/_20240123_135714custom-labels.png}
+\includegraphics[width=10cm]{/Users/chenchen/org/.attach/04/03220e-b530-4847-b0d0-ae2b31e8384f/_20240123_135714custom-labels.png}
 \end{center}
 
 上图是一个 Document 样例，在 root label 下有两个 main labels, \texttt{Parts} 和 \texttt{Meshes}, 它们分别表示几何模型和网格模型。然后在几何模型 \texttt{Parts} 下，我们可以根据模型的构成分成一些模型组件 \texttt{Part}, 每个模型组件具有独立的 Name, Shape, Color 等属性，同时它还会具有一些 \texttt{Feature} labels，用来包含 Shape 的 Face indices, Edge indices, Vertex indices 等信息。
@@ -817,6 +821,11 @@ OCAF 框架的 TDataStd package 为我们定义了很多基础的 \texttt{TDF\_A
 在另一个 main label \texttt{Meshes} 下，包含了几何模型的网格数据。它的 sub-label 为 \texttt{Mesh} label。 \texttt{Mesh} 类型会包含网格数据 triangulation, 以及一些其他数据，如 reference，用于指向对应的几何 Part。这样当几何 Part 发生变化时，Mesh label 可以做相应的更新。
 
 从上面的介绍，这个 app 中可以抽象出 3 个业务数据类型: \texttt{Part}, \texttt{Feature}, \texttt{Mesh} 。这三个数据类型，在业务上也是比较抽象的，后续可能会衍生一些更具体的类型。所以这里将它们定义为抽象接口，即 \texttt{IPart}, \texttt{IFeature}, \texttt{IMesh} 。
+\subsection{\texttt{IPart} class}
+\label{sec:org331ace5}
+
+\subsubsection{\texttt{IPart} class 的定义}
+\label{sec:org1676d55}
 
 下面是 \texttt{IPart} 的实现代码
 
@@ -834,20 +843,24 @@ public:
 
   TopoDS_Shape GetShape() const {
     Handle(TNaming_NamedShape) attr;
-    if (!m_root.FindAttribute(TNaming_NamedShape::GetID(), attr)) {
+    if (!m_root.FindAttribute(TNaming_NamedShape::GetID(), attr))
+    {
       return TopoDS_Shape();
     }
     return attr->Get();
   }
 
-  void SetColor(const unsigned r, const unsigned g, const unsigned b) {
+  void SetColor(const unsigned r,
+                const unsigned g,
+                const unsigned b) {
     int icolor = (r << 16) | (g << 8) | b;
     TDataStd_Integer::Set(m_root, icolor);
   }
 
   bool GetColor(unsigned& r, unsigned& g, unsigned& b) {
     Handle(TDataStd_Integer) attr;
-    if (!m_root.FindAttribute(TDataStd_Integer::GetID(), attr)) {
+    if (!m_root.FindAttribute(TDataStd_Integer::GetID(), attr))
+    {
       return false;
     }
     const int icolor = attr->Get();
@@ -861,22 +874,262 @@ private:
   TDF_Label m_root;
 }
 \end{minted}
-\section{实现一个自定义的 Attribute class}
-\label{sec:orge6a79b7}
+
+\begin{itemize}
+\item 上面的构造函数，传入一个 label 参数，表示对应的 Part label
+\item 然后 \texttt{SetShape} 和 \texttt{GetShape} 方法用来设置和获取 Part 的 Shape 属性
+\begin{itemize}
+\item Shape attribute 和其他比较基础的 attribute 类型不太一样，因为我们需要记录 Shape 的历史演化版本，用于 Undo/Redo 功能。所以不能像其他基础属性一样，通过 Set 的方式直接存储到 Label 中，而是需要放到一个 \texttt{TNaming\_NamedShape} 中，然后在存储在对应的 Label 中。 \texttt{TNaming\_NamedShape} 提供了新旧版本的功能。
+\item \texttt{TNaming\_Builder} 的构造函数根据给定的 label 创建一个空的 \texttt{TNaming\_NamedShape} 属性, 然后 \texttt{Generated} 方法将参数 \texttt{TopoDS\_Shape} 实例存储到 NamedShape 属性中。
+\end{itemize}
+\item 同样地, \texttt{SetColor}  和 \texttt{GetColor} 方法用于设置和获取 Part 的 Color 属性
+\begin{itemize}
+\item 这里 \texttt{Color} 使用一个 Integer 来存储。通过位操作运算来设置和获取 Color 的值
+\end{itemize}
+\end{itemize}
+
+注意: 上面的 \texttt{TNaming} 中的 \texttt{T} 是 Topological 的缩写；而在另一些情况下，如 \texttt{TDocStd} 中, \texttt{T} 则是 Transient 的缩写。这有时会让人困惑。
+\subsubsection{使用 \texttt{IFeature} 类}
+\label{sec:orgb40365c}
+
+下面是在 Application 的文档中创建 Part label 的示例代码:
+
+\begin{minted}[]{cpp}
+TDF_Label parts_label = doc->Main();
+
+IPart part1(TDF_TagSource::NewChild(parts_label));
+IPart part2(TDF_TagSource::NewChild(parts_label));
+IPart part3(TDF_TagSource::NewChild(parts_label));
+
+BRepPrimAPI_MakeBox box(1, 2, 3);
+part2.SetShape(box.Shape());
+part2.SetColor(255, 0, 0);
+\end{minted}
+
+\begin{itemize}
+\item 上面的代码在 main label \texttt{parts\_label} 下创建了三个 part labels: \texttt{part1}, \texttt{part2}, \texttt{part3}.
+\begin{itemize}
+\item 在创建 \texttt{IPart} 实例时，首先通过 \texttt{TDF\_TagSource::NewChild} 函数在 \texttt{parts\_label} 下创建 child labels, 并自动分配 Tag。
+\item 然后将新创建的 child label 传给 \texttt{IPart} 构造函数, 来创建 \texttt{IPart} 实例。
+\item 注意这里 \texttt{IPart} 不包含 \texttt{TDF\_Label} 而是引用它。
+\end{itemize}
+\item 然后为 \texttt{part2} 设置了 Shape 和 Color 属性。
+\end{itemize}
+\subsection{\texttt{IFeature} class}
+\label{sec:org25a32ce}
+
+\subsubsection{\texttt{IFeature} class 的定义}
+\label{sec:org02f3d54}
+
+下面是 \texttt{IFeature} class 的实现:
+
+\begin{minted}[]{cpp}
+class IFeature {
+  public:
+  IFeature(const TDF_Label& label): m_root(label) {
+  }
+
+  void SetFaces(const TColStd_PackedMapOfInteger& fids) {
+    Handle(TDataStd_IntPackedMap) attr =
+      TDataStd_IntPackedMap::Set(m_root);
+    attr->ChangeMap(fids);
+  }
+
+  private:
+  TDF_Label m_root;
+}
+\end{minted}
+
+\begin{itemize}
+\item 和 \texttt{IPart} 类似，构造函数传入的参数为 feature 对应的 label。
+\item 方法 \texttt{SetFaces} 在 feature label 中添加一个 face-id 作为其属性
+\end{itemize}
+\subsubsection{\texttt{TDataStd\_IntPackedMap} class}
+\label{sec:org2256694}
+
+\texttt{TDataStd\_IntPackedMap} 类用于在 OCAF 文档中存储和管理一组整数值的集合（如 ID、索引或其他整数标识符）。它可以被附加到 \texttt{TDF\_Label} 上，用于表示和管理与该标签相关联的一组整数。
+
+\begin{itemize}
+\item \texttt{ChangeMap(const TColStd\_PackedMapOfInteger\&)} 改变内部存储的 integer map。
+\item \texttt{IsEmpty()} 检查集合是否为空
+\item \texttt{Extend()} 获取集合中元素的数量
+\item \texttt{Add(const Standard\_Integer)} 向集合中添加一个整数值
+\item \texttt{Remove(const Standard\_Integer)} 从集合中移除一个整数值
+\item \texttt{Contains(const Standard\_Integer)} 检查集合中是否包含指定的整数值
+\item \texttt{Clear()} 清空集合中的所有元素
+\end{itemize}
+\subsubsection{使用 \texttt{IFeature} 类}
+\label{sec:org156f118}
+
+\begin{minted}[]{cpp}
+class IPart {
+  //...
+  IFeature CreateFeature(const TColStd_PackedMapOfInteger& fids) {
+    TDF_Label feat_root_lab = TDF_TagSource::NewChild(m_root);
+    IFeature feature(feat_root_lab);
+    feature.SetFaces(fids);
+    return feature;
+  }
+
+  void GetFeatures(std::vector<IFeature>& features) {
+    for (TDF_ChildIterator cit(m_root); cit.More(); cit.Next()) {
+      features.push_back(IFeature(cit.Value()));
+    }
+  }
+}
+
+TColStd_PackedMapOfInteger fids1, fids2;
+fids1.Add(1);
+fids1.Add(2);
+fids1.Add(3);
+fids2.Add(3);
+fids2.Add(4);
+fids2.Add(5);
+part3.CreateFeature(fids1);
+part3.CreateFeature(fids2);
+
+std::vector<IFeature> part3_features;
+part3.GetFeatures(part3_features);
+\end{minted}
+
+\begin{itemize}
+\item 在 \texttt{IPart} 类中，我们为其定义了创建和获取 feature 子标签的方法。
+\begin{itemize}
+\item \texttt{CreateFeature} 传入的参数为 Part 的 face-ids, 即所有的面标识符
+\item \texttt{GetFeatures} 中通过 \texttt{TDF\_ChildIterator} 迭代器来遍历 part label 下的所有 feature labels。
+\end{itemize}
+\item main 函数中, 创建了两个整数集合，作为 face-ids，然后在 \texttt{part3} 下创建两个 feature 标签。
+\item 最后通过 \texttt{GetFeatures} 方法获取所有的 features, 放在一个 vector 中。
+\end{itemize}
+\subsubsection{\texttt{TDF\_ChildIterator} class}
+\label{sec:org702e493}
+
+\texttt{TDF\_ChildIterator} 类通过提供一种简单而有效的方法来遍历 \texttt{TDF\_Label} 的子标签，使得开发者方便地访问和操作 OCAF 文档中的层次化数据。
+
+\begin{itemize}
+\item \texttt{TDF\_ChildIterator(const TDF\_Label\&, const Standard\_Boolean)} 构造函数，可以接受一个 label 和一个 bool 值。bool 参数用于指定是仅遍历第一层子标签，还是遍历所有层次的子标签（深度优先）。
+\item \texttt{More()} 检查是否还有更多的子标签可以遍历
+\item \texttt{Next()} 移动到下一个子标签
+\item \texttt{Value()} 获取当前子标签
+\end{itemize}
+\subsection{\texttt{IMesh} 类}
+\label{sec:org94ec631}
+
+\subsubsection{\texttt{IMesh} 类的定义}
+\label{sec:orgc97f9fb}
+
+\begin{minted}[]{cpp}
+class IMesh {
+  public:
+  IMesh(const TDF_Label& label): m_root(label) {
+  }
+
+  void Create(const IPart& part) {
+    TopoDS_Shape part_shape = part.GetShape();
+    Handle(Poly_Triangulation) mesh;
+    for (TopExp_Explorer exp(part_shape, TopAbs_FACE);
+         exp.More();
+         exp.Next()) {
+      const TopoDS_Face& face = TopoDS::Face(exp.Current());
+      TopLoc_Location loc;
+      mesh = BRep_Tool::Triangulation(face, loc);
+      break;
+    }
+    if (mesh.IsNull()) {
+      return;
+    }
+    TDataXtd_Triangulation::Set(m_root, mesh);
+
+    TDF_Reference::Set(m_root, part.GetLabel());
+  }
+
+  private:
+  TDF_Label m_root;
+}
+\end{minted}
+
+\begin{itemize}
+\item Mesh 在文档中也是一个 label。其构造函数和 \texttt{IPart}, \texttt{IFeature} 类似。
+\item \texttt{Creat} 方法中, 通过 \texttt{TopExp\_Explorer} 遍历 part shape 的所有 Face 元素。
+\begin{itemize}
+\item \texttt{TopoDS::Face} 函数将当前拓扑元素从类型 \texttt{TopoDS\_Shape} 转换为 \texttt{TopoDS\_Face}
+\end{itemize}
+\end{itemize}
+\subsubsection{\texttt{TopExp\_Explorer} 类}
+\label{sec:org3d382f8}
+
+\texttt{TopExp\_Explorer} 类提供了一种高效的方式来遍历和访问 \texttt{TopoDS\_Shape} 中的拓扑元素，使得开发者可以方便地对 Shape 内部结构的深入了解和控制。
+
+\begin{itemize}
+\item \texttt{TopExp\_Explorer(const TopoDS\_Shape\&, const TopAbs\_ShapeEnum to\_find, const TopAbs\_ShapeEnum to\_avoid)} 在构造函数的参数中，可以指定要遍历的 Shape, 遍历的元素类型(如 \texttt{TopAbs\_VERTEX}, \texttt{TopAbs\_EDGE} 等)。其中 \texttt{to\_find} 参数为要遍历的元素类型, \texttt{to\_avoid} 参数为忽略的元素类型, 默认为 \texttt{TopAbs\_SHAPE}
+\item \texttt{Current()} 获取当前遍历到的元素
+\item \texttt{Depth()} 返回当前遍历的深度
+\end{itemize}
+\subsubsection{\texttt{TopLoc\_Location} 类}
+\label{sec:org62568df}
+
+\texttt{TopLoc\_Location} 类用于定义几何形状在三维空间中的位置和方向，可以表示平移、旋转和缩放等变换，以及这些变换的组合。 \texttt{TopLoc\_Location} 通常与 \texttt{TopoDS\_Shape} 对象结合使用，以定义形状在空间中的放置。
+
+\begin{itemize}
+\item \texttt{TopLoc\_Location(const gp\_Trsf\&)} 基于给定的变换矩阵创建一个默认的位置
+\item \texttt{IsIdentity()} 检查位置是否为恒等变换
+\item \texttt{Transformation()} 获取与位置相关的变换矩阵(\texttt{gp\_Trsf})
+\item \texttt{Inverted()} 获取位置的逆变换
+\item \texttt{Multiplied(const TopLoc\_Location\&)} 将当前位置与另一个位置相乘，得到复合变换。
+\item \texttt{FirstDatum()} 和 \texttt{FirstPower()} 在位置表示为一系列变换的序列时，获取第一个变换及其次数。
+\end{itemize}
+\subsubsection{\texttt{BRep\_Tool} 类}
+\label{sec:org90810a4}
+
+\texttt{BRep\_Tool} 是一个工具类，提供对 \texttt{BRep} 形状 (如 \texttt{TopoDS\_Vertex}, \texttt{TopoDS\_Edge} 等) 的查询和访问。它是 OCCT 中用于处理几何形状的核心工具之一，尤其在 \texttt{BRep} 建模中。
+
+\begin{itemize}
+\item \texttt{Triangulation(const TopoDS\_Face\&, TopLoc\_Location\&)} 该静态函数用于从 \texttt{TopoDS\_Face} 对象中提取三角化的网格数据，该 face 需要已经被三角化。
+\begin{itemize}
+\item 三角化是将 CAD 模型中的曲面近似表示为三角形网格的过程。
+\item 它返回一个 \texttt{Poly\_Triangulation} 对象。
+\item \texttt{Poly\_Triangulation} 类用于表示三角化的网格数据，存储了曲面三角化的结果，包括顶点坐标、三角形索引，以及可选的法线和纹理坐标，通常用于可视化和几何分析。
+\end{itemize}
+\end{itemize}
+\subsubsection{\texttt{TDataXtd\_Triangulation}, \texttt{Poly\_Triangulation} 类}
+\label{sec:org52aaaef}
+
+\texttt{TDataXtd\_Triangulation} 类是 \texttt{TDF\_Attribute} 的子类型，可以理解为对 \texttt{Poly\_Triangulation} 的简单封装，主要接口和功能一致。
+
+\texttt{Poly\_Triangulation} 类用于存储三角化后的网格数据，使得开发者可以对几何形状进行有效的可视化和处理。它封装了三角化曲面及其他的几何形状数据，包括顶点坐标和三角形的拓扑结构。
+
+\begin{itemize}
+\item \texttt{NbNodes()} 获取三角网格的顶点数量
+\item \texttt{NbTriangles()} 获取三角网格中三角形的数量
+\item \texttt{InternalNodes()} 返回所有顶点的内部数组
+\item \texttt{Triangles()} 返回包含所有三角形索引的数组。每个三角形由三个顶点索引组成。
+\item \texttt{InternalUVNodes()} 返回包含 UV 纹理坐标的数组。
+\end{itemize}
+\subsubsection{\texttt{TDF\_Reference} 类}
+\label{sec:org1cfae96}
+
+\texttt{TDF\_Reference} 类提供了一种方式来在 OCAF 文档的一个 label 中存储对另一个 label 的引用，来增强 OCAF 的数据组织和管理能力。它用于表示复杂的数据关系，如链接到共享数据、创建装配结构的引用等。
+
+\begin{itemize}
+\item \texttt{Set(const TDF\_Label\& source, const TDF\_Label\& target)} 在 source 标签上创建一个对 target 标签的引用。
+\item \texttt{Get()} 获取当前引用所指向的标签。
+\end{itemize}
+\section{实现自定义的 Attribute}
+\label{sec:org4f3a8b2}
 
 
 
 
 \section{OCAF 实现参数化设计}
-\label{sec:org4ac97ba}
+\label{sec:org7ac6a4a}
 
 下面的代码基于 OCAF 实现了一个参数化设计程序。
 \section{基于 IVtk Package 实现一个 VTK 模型查看器}
-\label{sec:org336490d}
+\label{sec:orga2f4a0c}
 
 这个例子使用开源的 VTK 包作为 OCCT 的 3D 渲染前端。OCCT 提供了一个 \texttt{IVtk} package，它为 OCCT 的基础类型 \texttt{TopoDS} 和 VTK 的基础类型 \texttt{vtkPolyData} 提供了一个适配器。
 \subsection{程序代码}
-\label{sec:orgd64cc7f}
+\label{sec:org56c35c9}
 
 下面是项目的 \texttt{CMakeLists.txt} 文件内容：
 
@@ -959,10 +1212,10 @@ int main() {
 \includegraphics[width=.9\linewidth]{./img/occt-vtk-viewer.png}
 \end{center}
 \subsection{相关的类}
-\label{sec:org411a412}
+\label{sec:orgee030c1}
 
 \subsubsection{\texttt{IVtkTools\_ShapeDataSource} class}
-\label{sec:orgbef400e}
+\label{sec:org6715d3a}
 
 这个类用于将 OCCT 中的 BRep 拓扑结构数据 (如 \texttt{TopoDS\_Shape}) 转换为 VTK 的数据结构 (如 \texttt{vtkPolyData}, \texttt{vtkUnstructuredGrid})，从而能够在 VTK 环境中进行可视化和处理。
 
@@ -972,7 +1225,7 @@ int main() {
 \item \texttt{GetOutputPort()} 方法来自于其所继承的 \texttt{vtkPolyDataAlgrithm} 类，用于获取与给定输出端口对应的代理对象。代理对象可以传递给其他算法的 \texttt{SetInputConnection}, \texttt{AddInputConnection} 等方法，以修改管道连接。
 \end{itemize}
 \subsubsection{\texttt{IVtkOCC\_Shape} class}
-\label{sec:org5adaf2a}
+\label{sec:orgbb3a6b7}
 
 这个类用于将 OCCT 中的形状类型 (\texttt{TopoDS\_Shape}) 转换为 VTK 数据类型，以便在 VTK 中可以直接可视化和操作 OCCT 中的形状对象。
 
