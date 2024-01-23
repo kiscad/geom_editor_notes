@@ -542,14 +542,6 @@ int main() {
   // Insert an Integer attribute.
   TDataStd_Integer::Set(mainLab, 42);
 
-  // create a box shape
-  BRepPrimAPI_MakeBox box(1., 2., 3.);
-  const auto& shape = box.Shape();
-
-  // Insert the TopoDS_Shape as the attribute of main label
-  Handle(XCAFDoc_ShapeTool) shapetool = XCAFDoc_DocumentTool::ShapeTool(mainLab);
-  shapetool->SetShape(shapetool->NewShape(), shape);
-
   // Save TDocStd_Document to a disk file.
   auto sstatus = app->SaveAs(doc, "./test.cbf");
   if (sstatus != PCDM_SS_OK) {
@@ -568,6 +560,8 @@ int main() {
 [[./img/binocaf-binary-content.png]]
 
 我们可以大致看到文档中包含了 creation-date file-format, reference-counter, modification-counter, =TDataStd_Integer= 等一些信息。
+
+在 =TDF_Label= 中插入一个 =TopoDS_Shape= 属性，可以使用 =XCAFDoc_ShapeTool= 类或 =TNaming_Builder= 类。 =XCAF= 模块提供了更高级的形状管理功能，而 =TNaming= 模块提供了更通用的命名和标识机制。
 
 ** 相关的 OCCT 类
 
@@ -628,6 +622,134 @@ int main() {
 这个类只包含了三个静态函数，感觉像是个工具类。
 
 + =DefineFormat(TDocStd_Application&)= 设置格式为 "BinOcaf"，并为 app 注册读写驱动。
+
+** 几何形状的添加方式
+
+前面的例子中，我们通过 =TDataStd_Integer::Set(label, 123)= 语句往 =label= 中添加了一个整数属性。在各种属性中，最重要的是 =TopoDS_Shape= 属性，但是 =TopoDS_Shape= 类无法通过类似 =Set= 的静态函数进行添加。往 =TDF_Label= 中添加 =TopoDS_Shape= 属性的方式主要有两种: =TNaming_Builder= 类和 =XCAFDoc_ShapeTool= 类。 =TNaming= 模块提供了更通用的命名和标识机制; =XCAF= 模块提供了更高级的形状管理功能。
+
+下面是使用 =TNaming_Builder= 类添加 Shape 属性的代码示例：
+
+#+begin_src cpp
+TDF_Label label;
+TopoDS_Shape shape;
+
+// 创建一个 TNaming_Builder
+TNaming_Builder builder(label);
+// 为 TopoDS_Shape 创建一个命名
+builder.Generated(shape);
+#+end_src
+
+下面是使用 =XCAFDoc_ShapeTool= 类添加 Shape 属性的代码示例：
+
+#+begin_src cpp
+TDF_Label label;
+TopoDS_Shape shape;
+
+// 获取 XCAFDoc_ShapeTool
+Handle(XCAFDoc_ShapeTool) shapetool = XCAFDoc_DocumentTool::ShapeTool(label);
+// 插入 TopoDS_Shape
+TDF_Label label = shapetool->NewShape();
+shapetool->SetShape(label, shape);
+#+end_src
+
+*** =TNaming_Builder= class
+
+=TNaming_Builder= 类是在 OCAF 文档中创建和维护拓扑形状属性的工具类。其构造函数根据给定的标签创建一个空的 =TNaming_NamedShape= 属性。它允许在该 NamedShape 中添加具有指定 evolution type 的 "旧形状" 和 "新形状" 对。
+
++ =TNaming_Builder(const TDF_Label)= 构造函数的参数为要附加命名形状的 Label
++ =Generated(const TopoDS_Shape&)= 为给定的 Shape 创建一个 NamedShape, 并存储在关联的 Label 中。通常用于表示形状的创建或导入。
++ =Modify(const TopoDS_Shape& oldS, const TopoDS_Shape& newS)= 将 =oldS= 修改为 =newS=
++ =Delete(const TopoDS_Shape& S)= 将形状 =S= 从 label 中删除
+
+*** =XCAFDoc_DocumentTool= class
+
+=XCAFDoc_DocumentTool= 提供了一套工具和接口，用于在 OCAF 文档中处理和管理扩展的 CAD 数据，包括装配结构、颜色、层、材料等。
+
++ =IsXCAFDocument(const Handle<TDocStd_Document>&)= 检查给定文档是否为 XCAF 文档。
++ =ShapeTool(const TDF_Label&)= 在参数 label 下的子标签 =DocLabel= 下获取或创建一个 =ShapeTool= 属性。
++ 类似地还有 =ColorTool()=, =MaterialTool()=, =ViewTool()=, =LayerTool()= 等方法。
+
+*** =XCAFDoc_ShapeTool= class
+
+=XCAFDoc_ShapeTool= 类提供了一套工具，用于管理 XCAF 文档中的几何形状和装配结构。它支持装配结构的创建、管理和遍历，包括装配体、子装配体和零件。
+
++ =NewShape()= 创建一个新的空 top-level Shape
++ =AddShape(const TopoDS_Shape&)= 想文档中添加一个现有形状
++ =SetShape(const TDF_Label&, const TopoDS_Shape&)= 设置标签与特定形状的关联。
++ =GetShapes()= 获取文档中的所有 top-level shapes
++ =AddComponent()= 将形状作为组件添加到装配体中，如有必要，为组件创建一个额外的顶层形状，并返回组件的标签
++ =GetComponents()= 获取装配体中的所有组件
+
+
+* 实现一个自定义的 Part :ATTACH:
+:PROPERTIES:
+:ID:       0403220e-b530-4847-b0d0-ae2b31e8384f
+:END:
+
+OCAF 框架的 TDataStd package 为我们定义了很多基础的 =TDF_Attribute= 类型，通过组织这些 attribute types (如 Integer, Real, String), 我们可以在 TDocStd_Document 中创建所需的模型工件实例。但是这样的构建过程以及后续的访问和修改过程会变得非常琐碎啰嗦，因为我们需要逐级地访问深层的标签或属性。
+
+类似于 DataBase 中的 data scheme，我们可以为 OCAF Document 中的工件实例，创建一些工件类型属性，它们比基础属性更加抽象，更贴近业务需求；并在创建的工件类型中定义一些贴近业务的访问与修改接口。最后当我们需要在 Document 中添加一个新的工件实例时，只需要调用工件类型的构造函数即可。
+
+
+[[attachment:_20240123_135714custom-labels.png]]
+
+上图是一个 Document 样例，在 root label 下有两个 main labels, =Parts= 和 =Meshes=, 它们分别表示几何模型和网格模型。然后在几何模型 =Parts= 下，我们可以根据模型的构成分成一些模型组件 =Part=, 每个模型组件具有独立的 Name, Shape, Color 等属性，同时它还会具有一些 =Feature= labels，用来包含 Shape 的 Face indices, Edge indices, Vertex indices 等信息。
+
+在另一个 main label =Meshes= 下，包含了几何模型的网格数据。它的 sub-label 为 =Mesh= label。 =Mesh= 类型会包含网格数据 triangulation, 以及一些其他数据，如 reference，用于指向对应的几何 Part。这样当几何 Part 发生变化时，Mesh label 可以做相应的更新。
+
+从上面的介绍，这个 app 中可以抽象出 3 个业务数据类型: =Part=, =Feature=, =Mesh= 。这三个数据类型，在业务上也是比较抽象的，后续可能会衍生一些更具体的类型。所以这里将它们定义为抽象接口，即 =IPart=, =IFeature=, =IMesh= 。
+
+下面是 =IPart= 的实现代码
+
+#+begin_src cpp
+class IPart {
+public:
+  IPart(const TDF_Label& label): m_root(label) {
+    TDataStd_Name::Set(label, "Part");
+  }
+
+  void SetShape(const TopoDS_Shape& shape) {
+    TNaming_Builder builder(m_root);
+    builder.Generated(shape);
+  }
+
+  TopoDS_Shape GetShape() const {
+    Handle(TNaming_NamedShape) attr;
+    if (!m_root.FindAttribute(TNaming_NamedShape::GetID(), attr)) {
+      return TopoDS_Shape();
+    }
+    return attr->Get();
+  }
+
+  void SetColor(const unsigned r, const unsigned g, const unsigned b) {
+    int icolor = (r << 16) | (g << 8) | b;
+    TDataStd_Integer::Set(m_root, icolor);
+  }
+
+  bool GetColor(unsigned& r, unsigned& g, unsigned& b) {
+    Handle(TDataStd_Integer) attr;
+    if (!m_root.FindAttribute(TDataStd_Integer::GetID(), attr)) {
+      return false;
+    }
+    const int icolor = attr->Get();
+    r = (icolor >> 16) & 0xFF;
+    g = (icolor >>  8) & 0xFF;
+    b = icolor & 0xFF;
+    return true;
+  }
+
+private:
+  TDF_Label m_root;
+}
+#+end_src
+
++ 上面的构造函数，传入一个 label 参数，表示对应的 Part label
++ 然后 =SetShape= 和 =GetShape= 方法用来设置和获取 Part 的 Shape 属性
+  * Shape attribute 和其他比较基础的 attribute 类型不太一样，因为我们需要记录 Shape 的历史演化版本，用于 Undo/Redo 功能。所以不能像其他基础属性一样，通过 Set 的方式直接存储到 Label 中，而是需要放到一个 =TNaming_NamedShape= 中，然后在存储在对应的 Label 中。 =TNaming_NamedShape= 提供了新旧版本的功能。
++ 同样地, =SetColor=  和 =GetColor= 方法用于设置和获取 Part 的 Color 属性
+  * 这里 =Color= 使用一个 Integer 来存储。通过位操作运算来设置和获取 Color 的值
+
+注意: 上面的 =TNaming= 中的 =T= 是 Topological 的缩写；而在另一些情况下，如 =TDocStd= 中, =T= 则是 Transient 的缩写。这有时会让人困惑。
 
 * 实现一个自定义的 Attribute class
 
