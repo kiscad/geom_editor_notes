@@ -1,0 +1,90 @@
+#+title: Emacs Chinese Input Method
+
+我之前在 macos 上使用 Emacs 的时候，可以直接使用系统的中文输入。但是最近切换到了 Manjroa Arch Linux 系统，发现在 Emacs 中无法正常输入中文。经过了一段时间的研究和尝试，所有的问题基本解决了。这里总结一下解决方案。
+
+* 安装 [[https://fcitx-im.org/wiki/Fcitx_5][Fcitx5 输入法框架]]
+
+=sudo pacman -S fcitx5 fcitx5-gtk fcitx5-qt fcitx5-configtool=
+
++ =fcitx5= 输入法基础框架主程序
++ =fcitx5-gtk= GTK程序的支持
++ =fcitx5-qt= QT5 程序的支持
++ =fcitx5-configtool= 图形化配置工具
+
+然后设置 Fcitx5 相关的环境变量。具体写到哪个文件，不同的教程有不同的建议，包括 =~/.pam_environment=, =~/.xprofile=, 以及 =~/.zshrc= 等，可以自己逐个试一试。
+
+#+begin_src shell
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS="@im=fcitx5"
+#+end_src
+
+** 安装一个输入发皮肤
+
+一个教程建议的皮肤挺好看的，简约而现代。安装命令 =yay -S fcitx5-skin-adwaita-dark=
+
+为 Fcitx5 配置皮肤：编辑配置文件 =~/.config/fcitx5/conf/classicui.conf=
+
+#+begin_src conf
+# 横向候选列表
+Vertical Candidate List=False
+
+# 禁止字体随着 DPI 缩放，避免界面太大
+PerScreenDPI=False
+
+#字体和大小，可以用 fc-list 命令来查看使用
+Font="Noto Sans Mono 13"
+
+# GNome3 风格的主题
+Theme=adwaita-dark
+#+end_src
+
+* 安装 [[https://rime.im/][Rime 输入法引擎]]
+
+安装命令: =sudo pacman -S fcitx5-rime=
+
+安装完成后，可以在 Fcitx Configuration 窗口程序的 Input Method 标签页中添加 Rime 输入法引擎。
+
+* 安装和配置 [[https://github.com/DogLooksGood/emacs-rime][Emacs-Rime]] 和 [[https://github.com/tumashu/posframe][posframe]]
+
+安装一个 Rime 相关的库, =librime=, Emacs-rime package 会调用他。安装命令为: =sudo pacman -S librime=.
+
+安装输入法引擎和弹框插件 rime 和 posframe:
+
+#+begin_src elisp
+;; ~/.config/doom/package.el
+(package! rime)
+(package! posframe)
+#+end_src
+
+安装一个好看的中文字体: [[https://github.com/laishulu/Sarasa-Term-SC-Nerd][Sarasa Term SC Nerd]]。我先从 Github 上下载的字体的压缩包，然后通过 FontManager 来安装这个字体，然后在 FontManager 内确认字体的名称 =Sarasa Term SC Nerd=
+
+配置 rime 和 posframe
+
+#+begin_src elisp
+(use-package! rime
+  :custom
+  (default-input-method "rime")
+  (rime-show-candidate 'posframe))
+
+(global-set-key (kbd "s-SPC") 'toggle-input-method)
+(setq rime-user-data-dir "~/.config/fcitx/rime")
+(setq rime-share-data-dir "~/.local/share/fcitx5/rime")
+(setq rime-posframe-properties
+      (list :background-color "#333333"
+            :foreground-color "#dcdccc"
+            :font "Sarasa Term SC Nerd-14"
+            :internal-border-width 10))
+#+end_src
+
+* 安装和配置双拼输入法
+
+安装命令为 =sudo pacman -S rime-double-pinyin=
+
+安装完成后在 =~/.config/fcitx/rime/= 内为 Emacs-rime 配置，然后在 =~/.local/share/fcitx5/rime= 内为 Fcitx-rime 进行配置。
+
+* 消除输入候选的 emoji 建议
+
+默认情况下，输入的候选项会出现一些表情符号，而且常常乱码。
+
+看了一些不同的配置建议来移除 emoji-suggestion，后来发现最简单有效的方式是直接移除配置目录下的 =opencc= 目录。命令 =mv opencc opencc-delete=
