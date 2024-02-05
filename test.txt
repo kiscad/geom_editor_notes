@@ -1,0 +1,65 @@
+// split wire on 'face' by curve and store the result mapping the parameter on the curve and new vertex on the wire
+static TopoDS_Wire SplitWireByCurve(const TopoDS_Wire& wire, const TopoDS_Face& face,
+                                    const Handle(Geom2d_Curve) & curve2d, MapParVertex& mapParV,
+                                    const Handle(ShapeBuild_ReShape) & reShape)
+{
+    const BRepAdaptor_Surface faceAdapt(face);
+    const std::array<double, TWO> crv2dParams = {curve2d->FirstParameter(), curve2d->LastParameter()};
+    const std::array<gp_Pnt, TWO> crv2dBndPnts = GetCurveBoundaries(faceAdapt, curve2d);
+
+    GeomAPI_ProjectPointOnCurve projector;
+    for (TopExp_Explorer exp(wire, TopAbs_EDGE); exp.More(); exp.Next()) {
+        const TopoDS_Edge& edge = TopoDS::Edge(exp.Current());
+        double first = 0.0;
+        double last = 0.0;
+        Handle(Geom2d_Curve) c2d = BRep_Tool::CurveOnSurface(edge, face, first, last);
+        if (c2d.IsNull()) {
+            continue;
+        }
+        Handle(Geom_Curve) c3d = BRep_Tool::Curve(edge, first, last);
+        const double tolEdge = BRep_Tool::Tolerance(edge);
+        const double tol2d = std::max(faceAdapt.UResolution(tolEdge), faceAdapt.VResolution(tolEdge));
+        // check curves are fully or partially overlapped
+        if (Ncad::Analysis::OverlapTools::CurveOverlap(Geom2dAdaptor_Curve(c2d), Geom2dAdaptor_Curve(curve2d), tol2d)) {
+            continue;
+        }
+        // collect all intersection points
+        Geom2dAPI_InterCurveCurve intAlgo(c2d, curve2d, Precision::PConfusion());
+        MapParVertex curMapPV;
+        TopExp::Vertices(edge, curMapPV[first], curMapPV[last]);
+
+        // create new vertex or reuse already existent
+        auto createNewVertex = [c3d, first, last, &curMapPV, &mapParV](const double p1, const double p2) {
+            static const double tol = Precision::PConfusion();
+            TopoDS_Vertex newV = BRepBuilderAPI_MakeVertex(c3d->Value(p1));
+            newV = std::abs(p1 - first) < tol ? curMapPV[first] : (std::abs(p1 - last) < tol ? curMapPV[last] : newV);
+            curMapPV[p1] = newV;
+            mapParV[p2] = newV;
+        };
+        // insert vertex for each intersection point
+        for (int index = intAlgo.NbPoints(); index > 0; --index) {
+            double paramOnC1 = ComputeParameter(c2d, intAlgo.Point(index), tol2d);
+            double paramOnC2 = ComputeParameter(curve2d, intAlgo.Point(index), tol2d);
+            if (paramOnC1 >= first && paramOnC1 <= last && paramOnC2 >= crv2dParams[0] && paramOnC2 <= crv2dParams[1]) {
+                // create new vertex or take one of already existent
+                createNewVertex(paramOnC1, paramOnC2);
+            }
+        }
+        // no intersection is found, check the end of 'curve2d' is lying within tolerance of the current edge
+        if (intAlgo.NbPoints() == 0 && !c3d.IsNull()) {
+            projector.Init(c3d, first, last);
+            for (int i = 0; i < TWO; ++i) {
+                projector.Perform(crv2dBndPnts[i]);
+                if (projector.NbPoints() > 0 && projector.LowerDistance() < tolEdge) {
+                    createNewVertex(projector.LowerDistanceParameter(), crv2dParams[i]);
+                }
+            }
+        }
+        if (curMapPV.size() > TWO) {
+            // split current edge by intersection points
+            TopoDS_Wire newW = SplitEdgeByPoints(edge, curMapPV);
+            reShape->Replace(edge, newW);
+        }
+    }
+    return TopoDS::Wire(reShape->Apply(wire));
+}
